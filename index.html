@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- 版本 v2.0 · 2026-09-07 · 微信唤起高德App / 内容更新（可在浏览器"查看源码"第一行确认版本） -->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +8,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <meta name="description" content="山西太原四日行程导航：婚礼、景点、美食一站式安排，点击导航即可唤起高德地图App规划路线">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛰️</text></svg>">
     <title>山西之旅 · 行程导航</title>
     <style>
         /* ===== 全局重置 & 柔和基调 ===== */
@@ -90,13 +93,27 @@
             font-weight: 600;
         }
 
-        /* ===== 日期导航 ===== */
+        /* ===== 日期导航（吸顶） ===== */
+        html {
+            scroll-behavior: smooth;
+        }
         .day-tabs {
             display: flex;
             gap: 8px;
             justify-content: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            position: sticky;
+            top: 10px;
+            z-index: 90;
+            padding: 8px 8px;
+            background: rgba(247, 240, 238, 0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 44px;
+        }
+        .card {
+            scroll-margin-top: 78px;
         }
         .day-tabs a {
             text-decoration: none;
@@ -519,6 +536,31 @@
             white-space: nowrap;
         }
 
+        /* ===== 返回顶部按钮 ===== */
+        .back-top {
+            position: fixed;
+            right: 14px;
+            bottom: 76px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #c28a86, #b07470);
+            color: #fff;
+            font-size: 18px;
+            box-shadow: 0 4px 14px rgba(180, 110, 100, 0.30);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 95;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .back-top:active {
+            transform: scale(0.92);
+        }
+
         /* ===== 响应式 ===== */
         @media (max-width: 400px) {
             body { padding: 14px 10px 30px; }
@@ -543,6 +585,7 @@
             .nav-btn { background: #c28a86; color: #fff; }
             .quick-actions { display: none; }
             .day-tabs { display: none; }
+            .back-top { display: none !important; }
             .page-header { background: #f0e0dc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
@@ -649,7 +692,7 @@
 
         <!-- 下午备选 -->
         <div class="alt-section">
-            <div class="alt-title">🌿 下午 · 附近逛逛（三选一）</div>
+            <div class="alt-title">🌿 下午 · 附近逛逛（任选其一）</div>
 
             <div class="timeline-item">
                 <div class="timeline-time">步行<br><span class="note">1min</span></div>
@@ -697,6 +740,20 @@
                     </a>
                 </div>
             </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">打车<br><span class="note">20-25min</span></div>
+                <div class="timeline-content">
+                    <div class="place-name">
+                        太原古县城
+                        <span class="tag must">🏮 夜景出片</span>
+                    </div>
+                    <div class="place-desc">晋阳湖畔的明清风格古城，傍晚亮灯后最出片，城内小吃众多，可与晋阳湖公园连着逛</div>
+                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原古县城&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 导航
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- 晚餐 · 周六 -->
@@ -730,6 +787,22 @@
                 <div class="place-desc">经典晋菜馆，环境雅致</div>
                 <div class="recommend"><strong>推荐：</strong>过油肉 · 莜面栲栳栳 · 糖醋鲤鱼 · 刀削面</div>
                 <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原三晋饭庄&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <!-- 山西会馆 -->
+        <div class="timeline-item">
+            <div class="timeline-time">打车<br><span class="note">10-15min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    山西会馆
+                    <span class="tag">🥢 晋菜合集</span>
+                </div>
+                <div class="place-desc">一站式吃遍山西各地风味，饭点常有面食表演，适合聚餐，饭点人多建议早到</div>
+                <div class="recommend"><strong>推荐：</strong>过油肉 · 黄河鲤鱼炖豆腐 · 莜面栲栳栳 · 沁州黄小米粥</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=山西会馆&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航
                 </a>
             </div>
@@ -798,16 +871,13 @@
                     <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5489,37.8709,山西博物院&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                         <span class="icon">📍</span> 导航
                     </a>
-                    <!-- 预约入口：直接使用原始小程序链接，并增加复制功能 -->
-                    <a class="nav-btn appt-btn" href="#小程序://山西博物院参观预约/0RjPjaK2tCUtYwi">
-                        <span class="icon">📱</span> 预约入口
-                    </a>
-                    <button class="nav-btn copy-btn" id="copyApptBtn">
-                        <span class="icon">📋</span> 复制链接
+                    <!-- 网页无法直接拉起微信小程序，仅保留复制链接方案 -->
+                    <button class="nav-btn appt-btn" id="copyApptBtn">
+                        <span class="icon">📋</span> 复制预约链接
                     </button>
                 </div>
                 <div style="margin-top:4px;font-size:12px;color:#9a7a76;background:#f7eeea;padding:4px 10px;border-radius:10px;border:1px solid #e8d8d2;">
-                    💡 点击「预约入口」可直接跳转小程序（部分微信版本可能受限）；若无法跳转，请点击「复制链接」后，在微信聊天窗口粘贴并发送，再点击即可。
+                    💡 普通网页无法直接拉起微信小程序：点「复制预约链接」后，在微信任意聊天窗口粘贴发送，点击发出的小程序消息即可预约；也可在微信搜索公众号<strong>「山西博物院」</strong>直接预约。
                 </div>
                 <div style="margin-top:4px;font-size:12px;color:#9a7a76;">
                     📌 预约：公众号“山西博物院” · 放票时间 前一日20:00 / 当日8:00
@@ -828,7 +898,21 @@
 
         <!-- 下午备选 -->
         <div class="alt-section">
-            <div class="alt-title">🧩 下午 · 二选一</div>
+            <div class="alt-title">🧩 下午 · 三选一</div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">打车<br><span class="note">40min</span></div>
+                <div class="timeline-content">
+                    <div class="place-name">
+                        晋祠
+                        <span class="tag must">🌟 必去经典</span>
+                    </div>
+                    <div class="place-desc">中国现存最早的皇家祭祀园林，「三绝」周柏·侍女像·鱼沼飞梁，建议预留2-3小时，与博物院同天正好凑成文化日</div>
+                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=晋祠博物馆&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 导航
+                    </a>
+                </div>
+            </div>
 
             <div class="timeline-item">
                 <div class="timeline-time">打车<br><span class="note">10min</span></div>
@@ -1003,6 +1087,9 @@
 
 </div>
 
+<!-- ===== 返回顶部 ===== -->
+<button id="backTopBtn" class="back-top" aria-label="返回顶部">↑</button>
+
 <!-- ===== Toast 提示 ===== -->
 <div id="toastMessage" class="toast-message"></div>
 
@@ -1025,7 +1112,12 @@
         { name: '山西焖面', desc: '豆角焖面，面条筋道，菜肉香浓，一道菜管饱' },
         { name: '拨烂子', desc: '土豆擦丝裹面蒸制，软糯可口，可炒可拌，家常风味' },
         { name: '醋溜白菜', desc: '太原家常菜，酸甜脆爽，开胃下饭，醋香扑鼻' },
-        { name: '牛肉丸子面', desc: '临汾特色，面条筋道，牛肉丸子鲜香，汤底浓郁' }
+        { name: '牛肉丸子面', desc: '临汾特色，面条筋道，牛肉丸子鲜香，汤底浓郁' },
+        { name: '羊杂割', desc: '太原经典街头小吃，羊杂碎配粉丝，汤鲜味浓，撒葱花香菜，暖身首选' },
+        { name: '太原打卤面', desc: '山西四大名面之一，卤汁浓郁挂面，配烧肉、丸子、腐竹，家常宴席两相宜' },
+        { name: '沙棘汁', desc: '山西特色饮品，酸甜清爽、富含维C，吃面配肉的解腻神器' },
+        { name: '闻喜煮饼', desc: '山西传统名点，芝麻裹皮、绵软香甜、内馅拉丝，宜佐茶作伴手礼' },
+        { name: '石子馍', desc: '鹅卵石烙制的古老面点，酥脆咸香、耐放好带，配小米粥一绝' }
     ];
 
     const DISPLAY_COUNT = 8;
@@ -1057,6 +1149,15 @@
     document.addEventListener('DOMContentLoaded', function() {
         renderFoods();
         document.getElementById('refreshFoodBtn').addEventListener('click', renderFoods);
+
+        // 返回顶部按钮
+        const backTopBtn = document.getElementById('backTopBtn');
+        window.addEventListener('scroll', function() {
+            backTopBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
+        }, { passive: true });
+        backTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // 复制小程序链接
         const copyBtn = document.getElementById('copyApptBtn');
