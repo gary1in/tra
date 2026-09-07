@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <!-- 防止微信/浏览器缓存旧版本页面 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>山西之旅 · 行程导航</title>
     <style>
         /* ===== 全局重置 & 柔和基调 ===== */
@@ -563,6 +567,11 @@
         <a href="#day-mon" class="mon">周一</a>
     </div>
 
+    <!-- ==================== 微信内唤起高德App提示 ==================== -->
+    <div class="reminder-box" style="margin:-8px 0 18px;font-size:12px;">
+        <strong>📱 微信内使用</strong>：点击「导航」后若未自动打开高德地图 App，请在打开的页面中点击「打开高德地图」按钮；若仍无反应，点右上角「···」→「在浏览器打开」后重试即可直接唤起 App 导航。
+    </div>
+
     <!-- ============================================================ -->
     <!-- 周五 -->
     <!-- ============================================================ -->
@@ -581,7 +590,7 @@
                     <span class="tag">✈️ 抵达</span>
                 </div>
                 <div class="place-desc">航班落地，取行李后前往酒店</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?to=112.6206,37.7489&name=太原武宿机场" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.6206,37.7489,太原武宿机场&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航
                 </a>
             </div>
@@ -595,7 +604,7 @@
                     <span class="tag hotel">🏨 入住</span>
                 </div>
                 <div class="place-desc">打车约10-15分钟 · 酒店提供免费接机（需提前预约）</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?to=112.6050,37.7426&name=太原龙城凯悦嘉轩酒店" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.6050,37.7426,太原龙城凯悦嘉轩酒店&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航
                 </a>
                 <div style="margin-top:4px;font-size:12px;color:#9a7a76;">💡 深夜抵达，建议提前备些零食</div>
@@ -632,7 +641,7 @@
                     <span class="tag hotel">🏨 休息</span>
                 </div>
                 <div class="place-desc">返回酒店补觉、放松，为下午和晚上养精蓄锐</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?to=112.6050,37.7426&name=太原龙城凯悦嘉轩酒店" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.6050,37.7426,太原龙城凯悦嘉轩酒店&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航回酒店
                 </a>
             </div>
@@ -650,7 +659,7 @@
                         <span class="tag alt">🌳 最近</span>
                     </div>
                     <div class="place-desc">酒店正对面，小巧安静，散步放松首选</div>
-                    <a class="nav-btn" href="https://www.amap.com/dir?name=太原东篱公园" target="_blank">
+                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原东篱公园&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
                         <span class="icon">📍</span> 导航
                     </a>
                 </div>
@@ -664,11 +673,11 @@
                         <span class="tag alt">🌳 步行</span>
                     </div>
                     <div class="place-desc">比东篱公园略大，同样步行可达</div>
-                    <a class="nav-btn" href="https://www.amap.com/dir?name=太原狄仁傑文化公園" target="_blank">
+                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原狄仁杰文化公园&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
                         <span class="icon">📍</span> 狄仁杰公园
                     </a>
                     <span style="margin-left:6px;">
-                        <a class="nav-btn" href="https://www.amap.com/dir?name=太原學府公園" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
+                        <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原学府公园&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
                             <span class="icon">📍</span> 学府公园
                         </a>
                     </span>
@@ -683,7 +692,7 @@
                         <span class="tag alt">🌊 开阔</span>
                     </div>
                     <div class="place-desc">太原最大公园，湖景开阔，可骑行散步</div>
-                    <a class="nav-btn" href="https://www.amap.com/dir?to=112.5077,37.7696&name=晋阳湖公园" target="_blank">
+                    <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5077,37.7696,晋阳湖公园&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                         <span class="icon">📍</span> 导航
                     </a>
                 </div>
@@ -704,7 +713,7 @@
                 </div>
                 <div class="place-desc">太原“头脑”发源地，百年老字号</div>
                 <div class="recommend"><strong>推荐：</strong>头脑（八珍汤）· 羊肉烧卖 · 黄酒 · 腌韭菜</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?name=太原清和元饭店" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原清和元饭店&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航
                 </a>
             </div>
@@ -720,7 +729,7 @@
                 </div>
                 <div class="place-desc">经典晋菜馆，环境雅致</div>
                 <div class="recommend"><strong>推荐：</strong>过油肉 · 莜面栲栳栳 · 糖醋鲤鱼 · 刀削面</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?name=太原三晋饭庄" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原三晋饭庄&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航
                 </a>
             </div>
@@ -736,7 +745,7 @@
                 </div>
                 <div class="place-desc">餐饮选择丰富，购物吃饭一站式</div>
                 <div class="recommend"><strong>推荐：</strong>商场内多家晋菜馆（过油肉、刀削面）及各地风味</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?name=太原北美N1" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原北美N1购物中心&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航
                 </a>
             </div>
@@ -753,11 +762,11 @@
                 <div class="place-desc">民国复古街 + 小吃聚集地，夜景绝佳</div>
                 <div class="recommend"><strong>钟楼街推荐：</strong>老鼠窟元宵 · 雪山冷饮 · 宁化府醋<br>
                 <strong>食品街推荐：</strong>杨记灌肠 · 上帝炸鸡 · 荞面碗托</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?to=112.5602,37.8706&name=钟楼街" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5602,37.8706,钟楼街&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 钟楼街
                 </a>
                 <span style="margin-left:6px;">
-                    <a class="nav-btn" href="https://www.amap.com/dir?name=太原食品街" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
+                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原食品街&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
                         <span class="icon">📍</span> 食品街
                     </a>
                 </span>
@@ -786,7 +795,7 @@
                     9:00开馆 · 镇馆之宝：晋侯鸟尊 · <span class="highlight">免费但需提前3天预约！</span>
                 </div>
                 <div style="display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-top:4px;">
-                    <a class="nav-btn" href="https://www.amap.com/dir?to=112.5489,37.8709&name=山西博物院" target="_blank">
+                    <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5489,37.8709,山西博物院&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                         <span class="icon">📍</span> 导航
                     </a>
                     <!-- 预约入口：直接使用原始小程序链接，并增加复制功能 -->
@@ -829,7 +838,7 @@
                         <span class="tag alt">🏛️ 历史</span>
                     </div>
                     <div class="place-desc">原督军府旧址，免费预约，了解晋商文化</div>
-                    <a class="nav-btn" href="https://www.amap.com/dir?to=112.5667,37.8717&name=晋商博物院" target="_blank">
+                    <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5667,37.8717,晋商博物院&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                         <span class="icon">📍</span> 导航
                     </a>
                 </div>
@@ -843,7 +852,7 @@
                         <span class="tag hotel">🏨 休整</span>
                     </div>
                     <div class="place-desc">为周一早起赶飞机储备体力</div>
-                    <a class="nav-btn" href="https://www.amap.com/dir?to=112.6050,37.7426&name=太原龙城凯悦嘉轩酒店" target="_blank">
+                    <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.6050,37.7426,太原龙城凯悦嘉轩酒店&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                         <span class="icon">📍</span> 导航回酒店
                     </a>
                 </div>
@@ -864,7 +873,7 @@
                 </div>
                 <div class="place-desc">太原平民碳水天堂，烟火气十足</div>
                 <div class="recommend"><strong>推荐：</strong>黄氏大面皮 · 白家涮牛肚 · 鸡汁豆腐串 · 张娜绿豆饼</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?name=太原老军营小吃街" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原老军营小吃街&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航
                 </a>
             </div>
@@ -881,11 +890,11 @@
                 <div class="place-desc">如果周六没去，今晚可以补上</div>
                 <div class="recommend"><strong>钟楼街推荐：</strong>老鼠窟元宵 · 雪山冷饮 · 宁化府醋<br>
                 <strong>食品街推荐：</strong>杨记灌肠 · 上帝炸鸡 · 荞面碗托</div>
-                <a class="nav-btn" href="https://www.amap.com/dir?to=112.5602,37.8706&name=钟楼街" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5602,37.8706,钟楼街&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 钟楼街
                 </a>
                 <span style="margin-left:6px;">
-                    <a class="nav-btn" href="https://www.amap.com/dir?name=太原食品街" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
+                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原食品街&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
                         <span class="icon">📍</span> 食品街
                     </a>
                 </span>
@@ -913,7 +922,7 @@
                 <div class="place-desc">
                     航班 <strong>7:40</strong> 起飞 · <span class="highlight">务必提前一晚和前台确认免费送机时间！</span>
                 </div>
-                <a class="nav-btn" href="https://www.amap.com/dir?to=112.6206,37.7489&name=太原武宿机场" target="_blank">
+                <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.6206,37.7489,太原武宿机场&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                     <span class="icon">📍</span> 导航到机场
                 </a>
                 <div style="margin-top:4px;font-size:12px;color:#9a5a56;background:#f7eeea;padding:4px 12px;border-radius:10px;border:1px solid #f0e0da;">
@@ -973,22 +982,22 @@
 
         <!-- 快捷操作 -->
         <div class="quick-actions">
-            <a href="https://www.amap.com/dir?to=112.6050,37.7426&name=太原龙城凯悦嘉轩酒店" target="_blank">
+            <a href="https://uri.amap.com/navigation?to=112.6050,37.7426,太原龙城凯悦嘉轩酒店&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                 <span class="icon">🏨</span> 导航回酒店
             </a>
-            <a href="https://www.amap.com/dir?to=112.5489,37.8709&name=山西博物院" target="_blank">
+            <a href="https://uri.amap.com/navigation?to=112.5489,37.8709,山西博物院&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                 <span class="icon">🏛️</span> 导航到博物院
             </a>
-            <a href="https://www.amap.com/dir?to=112.6206,37.7489&name=太原武宿机场" target="_blank">
+            <a href="https://uri.amap.com/navigation?to=112.6206,37.7489,太原武宿机场&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                 <span class="icon">✈️</span> 导航到机场
             </a>
-            <a href="https://www.amap.com/dir?to=112.5602,37.8706&name=钟楼街" target="_blank">
+            <a href="https://uri.amap.com/navigation?to=112.5602,37.8706,钟楼街&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                 <span class="icon">🌃</span> 导航到钟楼街
             </a>
         </div>
 
         <div class="footer-note">
-            📱 点击任意「导航」按钮，自动从当前位置规划路线 · 祝旅途愉快 🌸
+            📱 点击任意「导航」按钮，自动唤起高德地图 App 从当前位置规划路线 · 祝旅途愉快 🌸
         </div>
     </div>
 
