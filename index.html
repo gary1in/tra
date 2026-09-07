@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>山西之旅 · 行程导航</title>
+    <style>
+        /* ===== 全局重置 & 柔和基调 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+            background: #f7f0ee;
+            color: #3e2e3a;
+            padding: 24px 16px 44px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* ===== 顶部标题 ===== */
+        .page-header {
+            text-align: center;
+            padding: 20px 16px 22px;
+            margin-bottom: 22px;
+            background: linear-gradient(145deg, #f0e0dc, #e8d4d0);
+            border-radius: 24px;
+            box-shadow: 0 6px 20px rgba(180, 130, 130, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::after {
+            content: '🌸';
+            position: absolute;
+            bottom: 8px;
+            right: 16px;
+            font-size: 32px;
+            opacity: 0.20;
+            transform: rotate(10deg);
+            pointer-events: none;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #5a3d3a;
+            position: relative;
+            z-index: 1;
+        }
+        .page-header h1 span {
+            color: #b37b7a;
+            font-weight: 300;
+        }
+        .page-header .sub {
+            font-size: 14px;
+            color: #7a5e5a;
+            margin-top: 4px;
+            letter-spacing: 1px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        .page-header .hotel-info {
+            margin-top: 10px;
+            font-size: 13px;
+            background: rgba(255, 245, 242, 0.6);
+            padding: 6px 22px;
+            border-radius: 40px;
+            display: inline-block;
+            color: #5a3d3a;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1;
+        }
+        .page-header .hotel-info strong {
+            color: #7a4a48;
+            font-weight: 600;
+        }
+
+        /* ===== 日期导航 ===== */
+        .day-tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .day-tabs a {
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 6px 20px;
+            border-radius: 40px;
+            background: #ffffffd9;
+            color: #4a3a3a;
+            transition: all 0.2s;
+            border: 1px solid #e2d0cc;
+            box-shadow: 0 2px 6px rgba(180, 130, 130, 0.04);
+            letter-spacing: 0.5px;
+        }
+        .day-tabs a:active {
+            transform: scale(0.94);
+            background: #f5e8e4;
+        }
+        .day-tabs a.fri { border-color: #d4b8b0; color: #6a4e4a; }
+        .day-tabs a.sat { border-color: #c8a0a0; color: #7a4a4a; }
+        .day-tabs a.sun { border-color: #b8b0a0; color: #5a5a4a; }
+        .day-tabs a.mon { border-color: #c8b0a8; color: #6a4e4a; }
+
+        /* ===== 卡片 ===== */
+        .card {
+            background: #ffffffec;
+            backdrop-filter: blur(2px);
+            border-radius: 20px;
+            padding: 20px 16px 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(180, 130, 130, 0.06);
+            border: 1px solid #f0e4e0;
+            transition: box-shadow 0.2s;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0e4e0;
+            margin-bottom: 14px;
+        }
+        .day-header .day-emoji {
+            font-size: 22px;
+            line-height: 1;
+        }
+        .day-header .day-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4a3430;
+            letter-spacing: 0.5px;
+        }
+        .day-header .day-date {
+            font-size: 13px;
+            color: #7a6060;
+            margin-left: auto;
+            background: #f5eae6;
+            padding: 2px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        /* ===== 行程条目 ===== */
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0 12px;
+            border-bottom: 1px solid #f2e6e2;
+        }
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-time {
+            flex: 0 0 58px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6a5450;
+            padding-top: 2px;
+            letter-spacing: 0.2px;
+        }
+        .timeline-time .note {
+            font-weight: 400;
+            font-size: 11px;
+            color: #9a7a76;
+            display: block;
+            margin-top: 1px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .timeline-content .place-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #3e2e2a;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px 8px;
+        }
+        .timeline-content .place-name .tag {
+            font-size: 10px;
+            font-weight: 500;
+            padding: 1px 12px;
+            border-radius: 30px;
+            background: #f0e6e2;
+            color: #6a4e4a;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .timeline-content .place-name .tag.hotel {
+            background: #e8dad6;
+            color: #7a4e4a;
+        }
+        .timeline-content .place-name .tag.must {
+            background: #f0dcd8;
+            color: #a04a4a;
+        }
+        .timeline-content .place-name .tag.alt {
+            background: #e2e6dc;
+            color: #4a6a4a;
+        }
+        .timeline-content .place-desc {
+            font-size: 13px;
+            color: #5a4a46;
+            margin-top: 2px;
+            line-height: 1.6;
+        }
+        .timeline-content .place-desc .highlight {
+            color: #9a5a56;
+            font-weight: 500;
+        }
+        /* 推荐菜品样式 */
+        .recommend {
+            font-size: 12px;
+            color: #7a5a5a;
+            margin-top: 3px;
+            background: #f7eeea;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid #e8d8d2;
+        }
+        .recommend strong {
+            font-weight: 600;
+            color: #7a4a48;
+        }
+
+        /* ===== 导航按钮 & 预约按钮 ===== */
+        .nav-btn {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #ffffff;
+            background: linear-gradient(135deg, #c28a86, #b07470);
+            padding: 4px 18px 4px 14px;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(180, 110, 100, 0.20);
+        }
+        .nav-btn:active {
+            transform: scale(0.94);
+            background: linear-gradient(135deg, #b07470, #9a5e5a);
+        }
+        .nav-btn .icon {
+            font-size: 13px;
+            margin-right: 4px;
+        }
+
+        /* 预约按钮（小程序专用） */
+        .appt-btn {
+            background: linear-gradient(135deg, #8a9a7a, #6a8a5a);
+            box-shadow: 0 2px 8px rgba(100, 130, 80, 0.20);
+            margin-left: 6px;
+        }
+        .appt-btn:active {
+            background: linear-gradient(135deg, #6a8a5a, #5a7a4a);
+        }
+
+        /* ===== 备选区块 ===== */
+        .alt-section {
+            margin-top: 8px;
+            padding: 12px 14px 8px;
+            background: #f8f0ec;
+            border-radius: 14px;
+            border-left: 3px solid #d4b8b0;
+        }
+        .alt-section .alt-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #7a5e5a;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .alt-section .timeline-item {
+            border-bottom: 1px solid #ede0da;
+            padding: 6px 0 10px;
+        }
+        .alt-section .timeline-item:last-child {
+            border-bottom: none;
+        }
+        .alt-section .timeline-time {
+            flex: 0 0 48px;
+            font-size: 12px;
+        }
+        .alt-section .timeline-content .place-name {
+            font-size: 14px;
+        }
+        .alt-section .timeline-content .place-desc {
+            font-size: 12px;
+        }
+        .alt-section .nav-btn {
+            font-size: 11px;
+            padding: 3px 14px 3px 12px;
+            background: linear-gradient(135deg, #b08a86, #9a7a76);
+            box-shadow: 0 2px 6px rgba(150, 110, 100, 0.15);
+        }
+        .alt-section .nav-btn:active {
+            background: linear-gradient(135deg, #9a7a76, #8a6a66);
+        }
+
+        .divider {
+            border-top: 1px solid #f0e4e0;
+            margin: 12px 0 10px;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6a5450;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== 底部信息 ===== */
+        .footer-section {
+            margin-top: 24px;
+        }
+        .footer-section .card {
+            background: #faf4f0;
+            border-color: #e8d8d2;
+        }
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #4a3430;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-section h3 .badge {
+            font-size: 11px;
+            font-weight: 500;
+            background: #e8d8d2;
+            padding: 1px 14px;
+            border-radius: 40px;
+            color: #6a4e4a;
+        }
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            font-size: 13px;
+            line-height: 2.0;
+            color: #4a3a36;
+        }
+        .footer-section ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 2px 0;
+        }
+        .footer-section ul li .emoji {
+            flex: 0 0 22px;
+        }
+
+        /* 动态美食列表 */
+        .food-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .food-item-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 6px 10px 6px 12px;
+            background: #f7eeea;
+            border-radius: 12px;
+            border: 1px solid #e8d8d2;
+        }
+        .food-item-detail .food-name {
+            font-weight: 600;
+            color: #4a3430;
+            min-width: 70px;
+            font-size: 14px;
+        }
+        .food-item-detail .food-desc {
+            font-size: 12px;
+            color: #6a5450;
+            line-height: 1.4;
+        }
+
+        .refresh-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 24px;
+            background: linear-gradient(135deg, #d4b8b0, #c0a098);
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(180, 130, 130, 0.15);
+            transition: all 0.2s;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        .refresh-btn:active {
+            transform: scale(0.94);
+            background: linear-gradient(135deg, #c0a098, #b08a86);
+        }
+
+        .reminder-box {
+            background: #f7eeea;
+            border-left: 4px solid #c08a86;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #4a3a36;
+        }
+        .reminder-box strong {
+            color: #9a5a56;
+        }
+        .reminder-box.green {
+            border-left-color: #8a9a7a;
+        }
+        .reminder-box.green strong {
+            color: #5a7a4a;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 14px 0 6px;
+        }
+        .quick-actions a {
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 40px;
+            background: #ffffffec;
+            color: #4a3a36;
+            border: 1px solid #e2d0cc;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            touch-action: manipulation;
+            box-shadow: 0 2px 6px rgba(180, 130, 130, 0.04);
+        }
+        .quick-actions a:active {
+            background: #f5e8e4;
+            transform: scale(0.95);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #9a7a76;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #e8d8d2;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 400px) {
+            body { padding: 14px 10px 30px; }
+            .page-header h1 { font-size: 24px; }
+            .timeline-time { flex: 0 0 48px; font-size: 12px; }
+            .timeline-content .place-name { font-size: 14px; }
+            .card { padding: 14px 12px 12px; }
+            .nav-btn { font-size: 11px; padding: 3px 14px 3px 12px; }
+            .day-tabs a { font-size: 12px; padding: 4px 14px; }
+            .food-item-detail .food-name { min-width: 60px; font-size: 13px; }
+            .food-item-detail .food-desc { font-size: 11px; }
+            .appt-btn { font-size: 11px; padding: 3px 14px 3px 12px; }
+        }
+
+        @media (min-width: 600px) {
+            body { padding: 32px 24px; }
+        }
+
+        @media print {
+            body { background: #fff; }
+            .card { box-shadow: none; border: 1px solid #ccc; }
+            .nav-btn { background: #c28a86; color: #fff; }
+            .quick-actions { display: none; }
+            .day-tabs { display: none; }
+            .page-header { background: #f0e0dc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ==================== 标题 ==================== -->
+    <div class="page-header">
+        <h1>⛰️ 山西<span>之旅</span></h1>
+        <div class="sub">2026.09.06 周五 — 09.09 周一 · 行程导航</div>
+        <div class="hotel-info">
+            🏨 太原龙城凯悦嘉轩酒店 · <strong>小店区黄陵路77号</strong>
+        </div>
+    </div>
+
+    <!-- ==================== 日期跳转 ==================== -->
+    <div class="day-tabs">
+        <a href="#day-fri" class="fri">周五</a>
+        <a href="#day-sat" class="sat">周六</a>
+        <a href="#day-sun" class="sun">周日</a>
+        <a href="#day-mon" class="mon">周一</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 周五 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-fri">
+        <div class="day-header">
+            <span class="day-emoji">🌙</span>
+            <span class="day-label">周五 · 抵达</span>
+            <span class="day-date">9月6日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">23:20</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    太原武宿机场
+                    <span class="tag">✈️ 抵达</span>
+                </div>
+                <div class="place-desc">航班落地，取行李后前往酒店</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?to=112.6206,37.7489&name=太原武宿机场" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">23:30<br><span class="note">≈15min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    太原龙城凯悦嘉轩酒店
+                    <span class="tag hotel">🏨 入住</span>
+                </div>
+                <div class="place-desc">打车约10-15分钟 · 酒店提供免费接机（需提前预约）</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?to=112.6050,37.7426&name=太原龙城凯悦嘉轩酒店" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+                <div style="margin-top:4px;font-size:12px;color:#9a7a76;">💡 深夜抵达，建议提前备些零食</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 周六 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-sat">
+        <div class="day-header">
+            <span class="day-emoji">💒</span>
+            <span class="day-label">周六 · 婚礼日</span>
+            <span class="day-date">9月7日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">上午</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    婚礼现场
+                    <span class="tag must">伴娘职责</span>
+                </div>
+                <div class="place-desc">早起准备，全程参与婚礼仪式与午宴</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">午宴后</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    太原龙城凯悦嘉轩酒店
+                    <span class="tag hotel">🏨 休息</span>
+                </div>
+                <div class="place-desc">返回酒店补觉、放松，为下午和晚上养精蓄锐</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?to=112.6050,37.7426&name=太原龙城凯悦嘉轩酒店" target="_blank">
+                    <span class="icon">📍</span> 导航回酒店
+                </a>
+            </div>
+        </div>
+
+        <!-- 下午备选 -->
+        <div class="alt-section">
+            <div class="alt-title">🌿 下午 · 附近逛逛（三选一）</div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">步行<br><span class="note">1min</span></div>
+                <div class="timeline-content">
+                    <div class="place-name">
+                        东篱公园
+                        <span class="tag alt">🌳 最近</span>
+                    </div>
+                    <div class="place-desc">酒店正对面，小巧安静，散步放松首选</div>
+                    <a class="nav-btn" href="https://www.amap.com/dir?name=太原东篱公园" target="_blank">
+                        <span class="icon">📍</span> 导航
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">步行<br><span class="note">10-15min</span></div>
+                <div class="timeline-content">
+                    <div class="place-name">
+                        狄仁傑文化公園 / 學府公園
+                        <span class="tag alt">🌳 步行</span>
+                    </div>
+                    <div class="place-desc">比东篱公园略大，同样步行可达</div>
+                    <a class="nav-btn" href="https://www.amap.com/dir?name=太原狄仁傑文化公園" target="_blank">
+                        <span class="icon">📍</span> 狄仁杰公园
+                    </a>
+                    <span style="margin-left:6px;">
+                        <a class="nav-btn" href="https://www.amap.com/dir?name=太原學府公園" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
+                            <span class="icon">📍</span> 学府公园
+                        </a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">打车<br><span class="note">15-20min</span></div>
+                <div class="timeline-content">
+                    <div class="place-name">
+                        晋阳湖公园
+                        <span class="tag alt">🌊 开阔</span>
+                    </div>
+                    <div class="place-desc">太原最大公园，湖景开阔，可骑行散步</div>
+                    <a class="nav-btn" href="https://www.amap.com/dir?to=112.5077,37.7696&name=晋阳湖公园" target="_blank">
+                        <span class="icon">📍</span> 导航
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 晚餐 · 周六 -->
+        <div class="divider"></div>
+        <div class="section-label">🍽️ 晚餐 · 以下选一</div>
+
+        <!-- 清和元饭店 -->
+        <div class="timeline-item">
+            <div class="timeline-time">打车<br><span class="note">4min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    清和元饭店（老字号）
+                    <span class="tag">🥢 小吃</span>
+                </div>
+                <div class="place-desc">太原“头脑”发源地，百年老字号</div>
+                <div class="recommend"><strong>推荐：</strong>头脑（八珍汤）· 羊肉烧卖 · 黄酒 · 腌韭菜</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?name=太原清和元饭店" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <!-- 三晋饭庄 -->
+        <div class="timeline-item">
+            <div class="timeline-time">打车<br><span class="note">13min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    三晋饭庄
+                    <span class="tag">🥢 晋菜</span>
+                </div>
+                <div class="place-desc">经典晋菜馆，环境雅致</div>
+                <div class="recommend"><strong>推荐：</strong>过油肉 · 莜面栲栳栳 · 糖醋鲤鱼 · 刀削面</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?name=太原三晋饭庄" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <!-- 晋阳街商圈 -->
+        <div class="timeline-item">
+            <div class="timeline-time">打车<br><span class="note">15-20min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    晋阳街商圈（北美N1）
+                    <span class="tag">🛍️ 商场</span>
+                </div>
+                <div class="place-desc">餐饮选择丰富，购物吃饭一站式</div>
+                <div class="recommend"><strong>推荐：</strong>商场内多家晋菜馆（过油肉、刀削面）及各地风味</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?name=太原北美N1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <!-- 柳巷商圈 · 钟楼街 / 食品街 -->
+        <div class="timeline-item">
+            <div class="timeline-time">打车<br><span class="note">30-35min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    柳巷商圈 · 钟楼街 / 食品街
+                    <span class="tag must">🌟 最热闹</span>
+                </div>
+                <div class="place-desc">民国复古街 + 小吃聚集地，夜景绝佳</div>
+                <div class="recommend"><strong>钟楼街推荐：</strong>老鼠窟元宵 · 雪山冷饮 · 宁化府醋<br>
+                <strong>食品街推荐：</strong>杨记灌肠 · 上帝炸鸡 · 荞面碗托</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?to=112.5602,37.8706&name=钟楼街" target="_blank">
+                    <span class="icon">📍</span> 钟楼街
+                </a>
+                <span style="margin-left:6px;">
+                    <a class="nav-btn" href="https://www.amap.com/dir?name=太原食品街" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
+                        <span class="icon">📍</span> 食品街
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 周日 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-sun">
+        <div class="day-header">
+            <span class="day-emoji">🏛️</span>
+            <span class="day-label">周日 · 文化日</span>
+            <span class="day-date">9月8日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">8:30<br><span class="note">车程30-35min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    山西博物院
+                    <span class="tag must">⭐ 必去</span>
+                </div>
+                <div class="place-desc">
+                    9:00开馆 · 镇馆之宝：晋侯鸟尊 · <span class="highlight">免费但需提前3天预约！</span>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-top:4px;">
+                    <a class="nav-btn" href="https://www.amap.com/dir?to=112.5489,37.8709&name=山西博物院" target="_blank">
+                        <span class="icon">📍</span> 导航
+                    </a>
+                    <a class="nav-btn appt-btn" href="#小程序://山西博物院参观预约/0RjPjaK2tCUtYwi">
+                        <span class="icon">📱</span> 预约入口
+                    </a>
+                </div>
+                <div style="margin-top:4px;font-size:12px;color:#9a7a76;">
+                    📌 预约：公众号“山西博物院” · 放票时间 前一日20:00 / 当日8:00 <br>
+                    <span style="color:#6a8a5a;">💡 点击「预约入口」在微信内直接跳转小程序</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">12:30</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    博物院附近午餐
+                    <span class="tag alt">🍜 就近</span>
+                </div>
+                <div class="place-desc">博物院周边有面馆和简餐，或自带简餐</div>
+            </div>
+        </div>
+
+        <!-- 下午备选 -->
+        <div class="alt-section">
+            <div class="alt-title">🧩 下午 · 二选一</div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">打车<br><span class="note">10min</span></div>
+                <div class="timeline-content">
+                    <div class="place-name">
+                        晋商博物院
+                        <span class="tag alt">🏛️ 历史</span>
+                    </div>
+                    <div class="place-desc">原督军府旧址，免费预约，了解晋商文化</div>
+                    <a class="nav-btn" href="https://www.amap.com/dir?to=112.5667,37.8717&name=晋商博物院" target="_blank">
+                        <span class="icon">📍</span> 导航
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">打车<br><span class="note">30-35min</span></div>
+                <div class="timeline-content">
+                    <div class="place-name">
+                        返回酒店休息
+                        <span class="tag hotel">🏨 休整</span>
+                    </div>
+                    <div class="place-desc">为周一早起赶飞机储备体力</div>
+                    <a class="nav-btn" href="https://www.amap.com/dir?to=112.6050,37.7426&name=太原龙城凯悦嘉轩酒店" target="_blank">
+                        <span class="icon">📍</span> 导航回酒店
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 晚餐 · 周日 -->
+        <div class="divider"></div>
+        <div class="section-label">🍽️ 周日晚餐 · 以下选一</div>
+
+        <!-- 老军营小吃街 -->
+        <div class="timeline-item">
+            <div class="timeline-time">打车<br><span class="note">≈30min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    老军营小吃街
+                    <span class="tag must">🍢 本地人私藏</span>
+                </div>
+                <div class="place-desc">太原平民碳水天堂，烟火气十足</div>
+                <div class="recommend"><strong>推荐：</strong>黄氏大面皮 · 白家涮牛肚 · 鸡汁豆腐串 · 张娜绿豆饼</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?name=太原老军营小吃街" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <!-- 柳巷商圈（周日补打卡） -->
+        <div class="timeline-item">
+            <div class="timeline-time">打车<br><span class="note">30-35min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    柳巷商圈（钟楼街/食品街）
+                    <span class="tag alt">🌃 补打卡</span>
+                </div>
+                <div class="place-desc">如果周六没去，今晚可以补上</div>
+                <div class="recommend"><strong>钟楼街推荐：</strong>老鼠窟元宵 · 雪山冷饮 · 宁化府醋<br>
+                <strong>食品街推荐：</strong>杨记灌肠 · 上帝炸鸡 · 荞面碗托</div>
+                <a class="nav-btn" href="https://www.amap.com/dir?to=112.5602,37.8706&name=钟楼街" target="_blank">
+                    <span class="icon">📍</span> 钟楼街
+                </a>
+                <span style="margin-left:6px;">
+                    <a class="nav-btn" href="https://www.amap.com/dir?name=太原食品街" target="_blank" style="background:linear-gradient(135deg,#b08a86,#9a7a76);">
+                        <span class="icon">📍</span> 食品街
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 周一 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-mon">
+        <div class="day-header">
+            <span class="day-emoji">✈️</span>
+            <span class="day-label">周一 · 返程</span>
+            <span class="day-date">9月9日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">5:30<br><span class="note">车程10-15min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    太原武宿机场
+                    <span class="tag hotel">🛫 起飞</span>
+                </div>
+                <div class="place-desc">
+                    航班 <strong>7:40</strong> 起飞 · <span class="highlight">务必提前一晚和前台确认免费送机时间！</span>
+                </div>
+                <a class="nav-btn" href="https://www.amap.com/dir?to=112.6206,37.7489&name=太原武宿机场" target="_blank">
+                    <span class="icon">📍</span> 导航到机场
+                </a>
+                <div style="margin-top:4px;font-size:12px;color:#9a5a56;background:#f7eeea;padding:4px 12px;border-radius:10px;border:1px solid #f0e0da;">
+                    ⚠️ 酒店免费接送服务时间 8:00-20:00，早班机需提前沟通安排！
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 底部 · 实用信息 -->
+    <!-- ============================================================ -->
+    <div class="footer-section">
+
+        <div class="card">
+            <h3>🧳 行李清单 <span class="badge">温差 10→25℃</span></h3>
+            <ul>
+                <li><span class="emoji">👕</span> <strong>内搭</strong> · 短袖 / 薄T恤（白天穿）</li>
+                <li><span class="emoji">🧥</span> <strong>中间层</strong> · 薄开衫 / 衬衫（早晚加）</li>
+                <li><span class="emoji">🧥</span> <strong>外套</strong> · 风衣 / 夹克 <span style="color:#9a5a56;font-weight:600;">（必备！）</span></li>
+                <li><span class="emoji">👟</span> <strong>鞋子</strong> · 舒适平底鞋 / 运动鞋</li>
+                <li><span class="emoji">🆔</span> <strong>证件</strong> · 身份证（博物院预约入场必需）</li>
+                <li><span class="emoji">🔋</span> <strong>其他</strong> · 充电宝、水杯（博物院有直饮水）、雨具</li>
+            </ul>
+        </div>
+
+        <!-- ===== 动态美食推荐 ===== -->
+        <div class="card">
+            <h3>🍜 太原必吃 · 经典风味 <span class="badge">随机推荐</span></h3>
+            <div id="foodContainer" class="food-list">
+                <!-- 由JavaScript动态渲染 -->
+            </div>
+            <div style="text-align:center;margin-top:10px;">
+                <button class="refresh-btn" id="refreshFoodBtn">🔄 换一批</button>
+            </div>
+            <div style="margin-top:10px;font-size:12px;color:#9a7a76;border-top:1px solid #e8d8d2;padding-top:8px;">
+                🛍️ 伴手礼可在钟楼街 / 柳巷区域购买（宁化府醋、六味斋酱肉、双合成糕点、太谷饼）
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📌 重要提醒</h3>
+            <div class="reminder-box">
+                <strong>🔔 山西博物院 · 周一闭馆！</strong><br>
+                周日是唯一参观机会，<strong>务必提前3天在公众号预约</strong>。<br>
+                放票时间：前一日20:00 和 当日8:00。
+            </div>
+            <div class="reminder-box green" style="margin-top:8px;">
+                <strong>🏨 酒店免费接送</strong><br>
+                每天 8:00-20:00 往返机场 / 太原南站，<strong>提前致电前台预约</strong>。<br>
+                周一早班机，<strong>务必提前一晚确认送机时间</strong>。
+            </div>
+            <div style="margin-top:8px;font-size:13px;color:#5a4a46;background:#f7eeea;padding:8px 14px;border-radius:10px;border:1px solid #f0e4e0;">
+                🌡️ 温差大（10-25℃），<strong>外套一定要带</strong>，早晚凉意明显。
+            </div>
+        </div>
+
+        <!-- 快捷操作 -->
+        <div class="quick-actions">
+            <a href="https://www.amap.com/dir?to=112.6050,37.7426&name=太原龙城凯悦嘉轩酒店" target="_blank">
+                <span class="icon">🏨</span> 导航回酒店
+            </a>
+            <a href="https://www.amap.com/dir?to=112.5489,37.8709&name=山西博物院" target="_blank">
+                <span class="icon">🏛️</span> 导航到博物院
+            </a>
+            <a href="https://www.amap.com/dir?to=112.6206,37.7489&name=太原武宿机场" target="_blank">
+                <span class="icon">✈️</span> 导航到机场
+            </a>
+            <a href="https://www.amap.com/dir?to=112.5602,37.8706&name=钟楼街" target="_blank">
+                <span class="icon">🌃</span> 导航到钟楼街
+            </a>
+        </div>
+
+        <div class="footer-note">
+            📱 点击任意「导航」按钮，自动从当前位置规划路线 · 祝旅途愉快 🌸
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ===== 美食数据（扩充版） =====
+    const FOOD_DATA = [
+        { name: '过油肉', desc: '山西头牌菜，猪肉片配木耳、洋葱，醋香浓郁，滑嫩下饭' },
+        { name: '头脑（八珍汤）', desc: '太原早餐天花板，清和元老字号，滋补暖身，配黄酒更地道' },
+        { name: '刀削面', desc: '柳叶形面条，筋道爽滑，浇头任选（西红柿鸡蛋、肉酱等）' },
+        { name: '莜面栲栳栳', desc: '莜麦面卷，蘸羊肉卤或西红柿酱，口感扎实，粗粮健康' },
+        { name: '荞面碗托', desc: '街头小吃，爽滑Q弹，配醋蒜汁、辣椒油，夏日解暑' },
+        { name: '杨记灌肠', desc: '食品街名小吃，荞麦面灌肠，酱香浓郁，口感软糯' },
+        { name: '老鼠窟元宵', desc: '钟楼街老字号，软糯香甜，馅料丰富（芝麻、花生、玫瑰）' },
+        { name: '雪山冷饮', desc: '食品街老店，特色冰淇淋和冷饮，饭后解腻好伴侣' },
+        { name: '宁化府陈醋', desc: '百年品牌，酸香醇厚，可作伴手礼，蘸饺子、拌面一绝' },
+        { name: '六味斋酱肉', desc: '太原老字号，酱香醇厚，肉质紧实，切片即食' },
+        { name: '双合成糕点', desc: '百年老字号，传统点心（酥饼、月饼），甜而不腻' },
+        { name: '太谷饼', desc: '山西名点，甜而不腻，酥软可口，带有芝麻香，宜佐茶' },
+        { name: '平遥牛肉', desc: '山西平遥特产，肉质鲜嫩，咸香入味，真空包装可带走' },
+        { name: '山西焖面', desc: '豆角焖面，面条筋道，菜肉香浓，一道菜管饱' },
+        { name: '拨烂子', desc: '土豆擦丝裹面蒸制，软糯可口，可炒可拌，家常风味' },
+        { name: '醋溜白菜', desc: '太原家常菜，酸甜脆爽，开胃下饭，醋香扑鼻' },
+        { name: '牛肉丸子面', desc: '临汾特色，面条筋道，牛肉丸子鲜香，汤底浓郁' }
+    ];
+
+    // 每次显示的条数
+    const DISPLAY_COUNT = 8;
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function renderFoods() {
+        const container = document.getElementById('foodContainer');
+        const shuffled = shuffleArray([...FOOD_DATA]);
+        const selected = shuffled.slice(0, DISPLAY_COUNT);
+        let html = '';
+        selected.forEach(item => {
+            html += `
+                <div class="food-item-detail">
+                    <span class="food-name">${item.name}</span>
+                    <span class="food-desc">${item.desc}</span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        renderFoods();
+        document.getElementById('refreshFoodBtn').addEventListener('click', renderFoods);
+    });
+</script>
+
+</body>
+</html>
