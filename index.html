@@ -282,6 +282,18 @@
             background: linear-gradient(135deg, #6a8a5a, #5a7a4a);
         }
 
+        /* 复制按钮 */
+        .copy-btn {
+            background: linear-gradient(135deg, #b0a090, #9a8a7a);
+            box-shadow: 0 2px 8px rgba(150, 130, 110, 0.20);
+            margin-left: 6px;
+            font-size: 11px;
+            padding: 4px 14px 4px 12px;
+        }
+        .copy-btn:active {
+            background: linear-gradient(135deg, #9a8a7a, #8a7a6a);
+        }
+
         /* ===== 备选区块 ===== */
         .alt-section {
             margin-top: 8px;
@@ -486,6 +498,23 @@
             border-top: 1px solid #e8d8d2;
         }
 
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(60, 50, 46, 0.85);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            z-index: 999;
+            display: none;
+            white-space: nowrap;
+        }
+
         /* ===== 响应式 ===== */
         @media (max-width: 400px) {
             body { padding: 14px 10px 30px; }
@@ -497,7 +526,7 @@
             .day-tabs a { font-size: 12px; padding: 4px 14px; }
             .food-item-detail .food-name { min-width: 60px; font-size: 13px; }
             .food-item-detail .food-desc { font-size: 11px; }
-            .appt-btn { font-size: 11px; padding: 3px 14px 3px 12px; }
+            .appt-btn, .copy-btn { font-size: 11px; padding: 3px 14px 3px 12px; }
         }
 
         @media (min-width: 600px) {
@@ -760,13 +789,19 @@
                     <a class="nav-btn" href="https://www.amap.com/dir?to=112.5489,37.8709&name=山西博物院" target="_blank">
                         <span class="icon">📍</span> 导航
                     </a>
+                    <!-- 预约入口：直接使用原始小程序链接，并增加复制功能 -->
                     <a class="nav-btn appt-btn" href="#小程序://山西博物院参观预约/0RjPjaK2tCUtYwi">
                         <span class="icon">📱</span> 预约入口
                     </a>
+                    <button class="nav-btn copy-btn" id="copyApptBtn">
+                        <span class="icon">📋</span> 复制链接
+                    </button>
+                </div>
+                <div style="margin-top:4px;font-size:12px;color:#9a7a76;background:#f7eeea;padding:4px 10px;border-radius:10px;border:1px solid #e8d8d2;">
+                    💡 点击「预约入口」可直接跳转小程序（部分微信版本可能受限）；若无法跳转，请点击「复制链接」后，在微信聊天窗口粘贴并发送，再点击即可。
                 </div>
                 <div style="margin-top:4px;font-size:12px;color:#9a7a76;">
-                    📌 预约：公众号“山西博物院” · 放票时间 前一日20:00 / 当日8:00 <br>
-                    <span style="color:#6a8a5a;">💡 点击「预约入口」在微信内直接跳转小程序</span>
+                    📌 预约：公众号“山西博物院” · 放票时间 前一日20:00 / 当日8:00
                 </div>
             </div>
         </div>
@@ -959,6 +994,9 @@
 
 </div>
 
+<!-- ===== Toast 提示 ===== -->
+<div id="toastMessage" class="toast-message"></div>
+
 <script>
     // ===== 美食数据（扩充版） =====
     const FOOD_DATA = [
@@ -981,7 +1019,6 @@
         { name: '牛肉丸子面', desc: '临汾特色，面条筋道，牛肉丸子鲜香，汤底浓郁' }
     ];
 
-    // 每次显示的条数
     const DISPLAY_COUNT = 8;
 
     function shuffleArray(arr) {
@@ -1011,6 +1048,50 @@
     document.addEventListener('DOMContentLoaded', function() {
         renderFoods();
         document.getElementById('refreshFoodBtn').addEventListener('click', renderFoods);
+
+        // 复制小程序链接
+        const copyBtn = document.getElementById('copyApptBtn');
+        const toast = document.getElementById('toastMessage');
+        const apptLink = '#小程序://山西博物院参观预约/0RjPjaK2tCUtYwi';
+
+        copyBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // 使用 Clipboard API 或 fallback
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(apptLink).then(() => {
+                    showToast('✅ 链接已复制，请在微信聊天窗口粘贴并发送后点击');
+                }).catch(() => {
+                    fallbackCopy(apptLink);
+                });
+            } else {
+                fallbackCopy(apptLink);
+            }
+        });
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('✅ 链接已复制，请在微信聊天窗口粘贴并发送后点击');
+            } catch (e) {
+                showToast('❌ 复制失败，请手动复制链接');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3500);
+        }
     });
 </script>
 
