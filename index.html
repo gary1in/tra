@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 版本 v2.0 · 2026-09-07 · 微信唤起高德App / 内容更新（可在浏览器"查看源码"第一行确认版本） -->
+<!-- 版本 v2.1 · 2026-09-11 · 周日改为14:00博物院场次+上午推荐（可在浏览器"查看源码"第一行确认版本） -->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -293,28 +293,6 @@
             margin-right: 4px;
         }
 
-        /* 预约按钮（小程序专用） */
-        .appt-btn {
-            background: linear-gradient(135deg, #8a9a7a, #6a8a5a);
-            box-shadow: 0 2px 8px rgba(100, 130, 80, 0.20);
-            margin-left: 6px;
-        }
-        .appt-btn:active {
-            background: linear-gradient(135deg, #6a8a5a, #5a7a4a);
-        }
-
-        /* 复制按钮 */
-        .copy-btn {
-            background: linear-gradient(135deg, #b0a090, #9a8a7a);
-            box-shadow: 0 2px 8px rgba(150, 130, 110, 0.20);
-            margin-left: 6px;
-            font-size: 11px;
-            padding: 4px 14px 4px 12px;
-        }
-        .copy-btn:active {
-            background: linear-gradient(135deg, #9a8a7a, #8a7a6a);
-        }
-
         /* ===== 备选区块 ===== */
         .alt-section {
             margin-top: 8px;
@@ -519,23 +497,6 @@
             border-top: 1px solid #e8d8d2;
         }
 
-        .toast-message {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(60, 50, 46, 0.85);
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-size: 14px;
-            backdrop-filter: blur(6px);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-            z-index: 999;
-            display: none;
-            white-space: nowrap;
-        }
-
         /* ===== 返回顶部按钮 ===== */
         .back-top {
             position: fixed;
@@ -572,7 +533,6 @@
             .day-tabs a { font-size: 12px; padding: 4px 14px; }
             .food-item-detail .food-name { min-width: 60px; font-size: 13px; }
             .food-item-detail .food-desc { font-size: 11px; }
-            .appt-btn, .copy-btn { font-size: 11px; padding: 3px 14px 3px 12px; }
         }
 
         @media (min-width: 600px) {
@@ -857,71 +817,18 @@
             <span class="day-date">9月8日</span>
         </div>
 
-        <div class="timeline-item">
-            <div class="timeline-time">8:30<br><span class="note">车程30-35min</span></div>
-            <div class="timeline-content">
-                <div class="place-name">
-                    山西博物院
-                    <span class="tag must">⭐ 必去</span>
-                </div>
-                <div class="place-desc">
-                    9:00开馆 · 镇馆之宝：晋侯鸟尊 · <span class="highlight">免费但需提前3天预约！</span>
-                </div>
-                <div style="display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-top:4px;">
-                    <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5489,37.8709,山西博物院&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
-                        <span class="icon">📍</span> 导航
-                    </a>
-                    <!-- 网页无法直接拉起微信小程序，仅保留复制链接方案 -->
-                    <button class="nav-btn appt-btn" id="copyApptBtn">
-                        <span class="icon">📋</span> 复制预约链接
-                    </button>
-                </div>
-                <div style="margin-top:4px;font-size:12px;color:#9a7a76;background:#f7eeea;padding:4px 10px;border-radius:10px;border:1px solid #e8d8d2;">
-                    💡 普通网页无法直接拉起微信小程序：点「复制预约链接」后，在微信任意聊天窗口粘贴发送，点击发出的小程序消息即可预约；也可在微信搜索公众号<strong>「山西博物院」</strong>直接预约。
-                </div>
-                <div style="margin-top:4px;font-size:12px;color:#9a7a76;">
-                    📌 预约：公众号“山西博物院” · 放票时间 前一日20:00 / 当日8:00
-                </div>
-            </div>
-        </div>
-
-        <div class="timeline-item">
-            <div class="timeline-time">12:30</div>
-            <div class="timeline-content">
-                <div class="place-name">
-                    博物院附近午餐
-                    <span class="tag alt">🍜 就近</span>
-                </div>
-                <div class="place-desc">博物院周边有面馆和简餐，或自带简餐</div>
-            </div>
-        </div>
-
-        <!-- 下午备选 -->
+        <!-- 上午备选（博物馆场次在下午2点，上午空出） -->
         <div class="alt-section">
-            <div class="alt-title">🧩 下午 · 三选一</div>
+            <div class="alt-title">🌤️ 上午 · 三选一（11:30 前结束）</div>
 
             <div class="timeline-item">
-                <div class="timeline-time">打车<br><span class="note">40min</span></div>
-                <div class="timeline-content">
-                    <div class="place-name">
-                        晋祠
-                        <span class="tag must">🌟 必去经典</span>
-                    </div>
-                    <div class="place-desc">中国现存最早的皇家祭祀园林，「三绝」周柏·侍女像·鱼沼飞梁，建议预留2-3小时，与博物院同天正好凑成文化日</div>
-                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=晋祠博物馆&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
-                        <span class="icon">📍</span> 导航
-                    </a>
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-time">打车<br><span class="note">10min</span></div>
+                <div class="timeline-time">打车<br><span class="note">20-25min</span></div>
                 <div class="timeline-content">
                     <div class="place-name">
                         晋商博物院
-                        <span class="tag alt">🏛️ 历史</span>
+                        <span class="tag alt">🏛️ 首推</span>
                     </div>
-                    <div class="place-desc">原督军府旧址，免费预约，了解晋商文化</div>
+                    <div class="place-desc">原督军府旧址，免费预约，了解晋商文化；9:00开馆逛到11:30，距博物院仅10分钟车程，全天动线最顺</div>
                     <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5667,37.8717,晋商博物院&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
                         <span class="icon">📍</span> 导航
                     </a>
@@ -929,16 +836,62 @@
             </div>
 
             <div class="timeline-item">
-                <div class="timeline-time">打车<br><span class="note">30-35min</span></div>
+                <div class="timeline-time">8:00<br><span class="note">出发·打车40min</span></div>
                 <div class="timeline-content">
                     <div class="place-name">
-                        返回酒店休息
-                        <span class="tag hotel">🏨 休整</span>
+                        晋祠
+                        <span class="tag must">🌟 必去经典</span>
                     </div>
-                    <div class="place-desc">为周一早起赶飞机储备体力</div>
-                    <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.6050,37.7426,太原龙城凯悦嘉轩酒店&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
-                        <span class="icon">📍</span> 导航回酒店
+                    <div class="place-desc">中国现存最早的皇家祭祀园林，「三绝」周柏·侍女像·鱼沼飞梁；8:30开园逛2.5-3小时，返程顺路吃午饭，正好赶上下午场次</div>
+                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=晋祠博物馆&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 导航
                     </a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">打车<br><span class="note">15-20min</span></div>
+                <div class="timeline-content">
+                    <div class="place-name">
+                        双塔寺（永祚寺）
+                        <span class="tag alt">🗼 太原地标</span>
+                    </div>
+                    <div class="place-desc">双塔凌霄是太原城标志，可登塔俯瞰全城；体量小、逛1-1.5小时，节奏最轻松</div>
+                    <a class="nav-btn" href="https://uri.amap.com/search?keyword=太原双塔寺&city=太原&src=tra&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 导航
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">12:00</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    午餐 · 博物院周边
+                    <span class="tag alt">🍜 就近</span>
+                </div>
+                <div class="place-desc">博物院周边面馆和简餐，或逛完上午景点顺路吃；<span class="highlight">13:20 前吃完</span>，留足安检入馆时间</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">14:00<br><span class="note">预约场次</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    山西博物院
+                    <span class="tag must">⭐ 必去</span>
+                </div>
+                <div class="place-desc">
+                    已约 <span class="highlight">下午2点场次</span> · 建议13:30前到馆安检入馆 · 镇馆之宝：晋侯鸟尊 · 参观约2.5-3小时
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-top:4px;">
+                    <a class="nav-btn" href="https://uri.amap.com/navigation?to=112.5489,37.8709,山西博物院&mode=car&src=tra&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 导航
+                    </a>
+                </div>
+                <div style="margin-top:4px;font-size:12px;color:#9a7a76;background:#f7eeea;padding:4px 10px;border-radius:10px;border:1px solid #e8d8d2;">
+                    💡 参观结束约17:00，可回酒店休息或直接前往晚餐地点，车程均约25-35分钟；记得带身份证入馆。
                 </div>
             </div>
         </div>
@@ -1050,9 +1003,9 @@
         <div class="card">
             <h3>📌 重要提醒</h3>
             <div class="reminder-box">
-                <strong>🔔 山西博物院 · 周一闭馆！</strong><br>
-                周日是唯一参观机会，<strong>务必提前3天在公众号预约</strong>。<br>
-                放票时间：前一日20:00 和 当日8:00。
+                <strong>🔔 山西博物院 · 已约周日下午2点场</strong><br>
+                建议 <strong>13:30 前到馆</strong>安检入馆，<strong>带身份证</strong>；周一闭馆。<br>
+                上午可先逛晋商博物院 / 晋祠 / 双塔寺（见周日行程），13:20 前结束午餐。
             </div>
             <div class="reminder-box green" style="margin-top:8px;">
                 <strong>🏨 酒店免费接送</strong><br>
@@ -1089,9 +1042,6 @@
 
 <!-- ===== 返回顶部 ===== -->
 <button id="backTopBtn" class="back-top" aria-label="返回顶部">↑</button>
-
-<!-- ===== Toast 提示 ===== -->
-<div id="toastMessage" class="toast-message"></div>
 
 <script>
     // ===== 美食数据（扩充版） =====
@@ -1158,50 +1108,6 @@
         backTopBtn.addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
-        // 复制小程序链接
-        const copyBtn = document.getElementById('copyApptBtn');
-        const toast = document.getElementById('toastMessage');
-        const apptLink = '#小程序://山西博物院参观预约/0RjPjaK2tCUtYwi';
-
-        copyBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            // 使用 Clipboard API 或 fallback
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(apptLink).then(() => {
-                    showToast('✅ 链接已复制，请在微信聊天窗口粘贴并发送后点击');
-                }).catch(() => {
-                    fallbackCopy(apptLink);
-                });
-            } else {
-                fallbackCopy(apptLink);
-            }
-        });
-
-        function fallbackCopy(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.left = '-9999px';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                showToast('✅ 链接已复制，请在微信聊天窗口粘贴并发送后点击');
-            } catch (e) {
-                showToast('❌ 复制失败，请手动复制链接');
-            }
-            document.body.removeChild(textarea);
-        }
-
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.style.display = 'block';
-            clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3500);
-        }
     });
 </script>
 
