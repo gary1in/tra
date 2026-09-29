@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<!-- 版本 v1.0 · 2026-09-29 · 厦门-漳平行程初版（可在浏览器"查看源码"第一行确认版本） -->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <!-- 防止微信/浏览器缓存旧版本页面 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="福建厦门六日行程导航：鼓浪屿、南普陀、沙坡尾、漳平婚礼一站式安排，点击导航即可唤起高德地图App规划路线">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🌊</text></svg>">
+    <title>福建之旅 · 厦门行程导航</title>
+    <style>
+        /* ===== 全局重置 & 海洋基调 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+            background: #eef5f6;
+            color: #2e3e42;
+            padding: 24px 16px 44px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* ===== 顶部标题 ===== */
+        .page-header {
+            text-align: center;
+            padding: 20px 16px 22px;
+            margin-bottom: 22px;
+            background: linear-gradient(145deg, #d8ecee, #c6e2e6);
+            border-radius: 24px;
+            box-shadow: 0 6px 20px rgba(80, 140, 150, 0.14);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::after {
+            content: '⛵';
+            position: absolute;
+            bottom: 8px;
+            right: 16px;
+            font-size: 32px;
+            opacity: 0.22;
+            transform: rotate(-8deg);
+            pointer-events: none;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #2d4e55;
+            position: relative;
+            z-index: 1;
+        }
+        .page-header h1 span {
+            color: #4a93a0;
+            font-weight: 300;
+        }
+        .page-header .sub {
+            font-size: 14px;
+            color: #4e6e74;
+            margin-top: 4px;
+            letter-spacing: 1px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        .page-header .hotel-info {
+            margin-top: 10px;
+            font-size: 12.5px;
+            background: rgba(250, 255, 255, 0.65);
+            padding: 6px 18px;
+            border-radius: 40px;
+            display: inline-block;
+            color: #2d4e55;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1;
+            line-height: 1.8;
+        }
+        .page-header .hotel-info strong {
+            color: #35707c;
+            font-weight: 600;
+        }
+
+        /* ===== 日期导航（吸顶） ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+        .day-tabs {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 10px;
+            z-index: 90;
+            padding: 8px;
+            background: rgba(238, 245, 246, 0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 44px;
+        }
+        .card {
+            scroll-margin-top: 78px;
+        }
+        .day-tabs a {
+            text-decoration: none;
+            font-size: 12.5px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 40px;
+            background: #ffffffd9;
+            color: #3a4e52;
+            transition: all 0.2s;
+            border: 1px solid #cfe0e2;
+            box-shadow: 0 2px 6px rgba(80, 140, 150, 0.05);
+            letter-spacing: 0.5px;
+        }
+        .day-tabs a:active {
+            transform: scale(0.94);
+            background: #e0f0f1;
+        }
+        .day-tabs a.hl { border-color: #9ec5cb; color: #2d6a74; font-weight: 600; }
+
+        /* ===== 卡片 ===== */
+        .card {
+            background: #ffffffec;
+            backdrop-filter: blur(2px);
+            border-radius: 20px;
+            padding: 20px 16px 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(80, 140, 150, 0.07);
+            border: 1px solid #dfecee;
+            transition: box-shadow 0.2s;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #dfecee;
+            margin-bottom: 14px;
+        }
+        .day-header .day-emoji {
+            font-size: 22px;
+            line-height: 1;
+        }
+        .day-header .day-label {
+            font-size: 19px;
+            font-weight: 600;
+            color: #26434a;
+            letter-spacing: 0.5px;
+        }
+        .day-header .day-date {
+            font-size: 13px;
+            color: #4e7078;
+            margin-left: auto;
+            background: #e3f0f1;
+            padding: 2px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* ===== 行程条目 ===== */
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0 12px;
+            border-bottom: 1px solid #e4eff0;
+        }
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-time {
+            flex: 0 0 62px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f5561;
+            letter-spacing: 0.2px;
+            background: #dff0f2;
+            border: 1px solid #c6e2e6;
+            border-radius: 12px;
+            padding: 5px 4px;
+            text-align: center;
+            align-self: flex-start;
+            font-variant-numeric: tabular-nums;
+        }
+        .timeline-time .note {
+            font-weight: 500;
+            font-size: 10.5px;
+            color: #3d7f8a;
+            display: block;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        .timeline-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .timeline-content .place-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #22403f;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px 8px;
+        }
+        .timeline-content .place-name .tag {
+            font-size: 10px;
+            font-weight: 500;
+            padding: 1px 12px;
+            border-radius: 30px;
+            background: #e2eef0;
+            color: #46707a;
+            letter-spacing: 0.3px;
+        }
+        .timeline-content .place-name .tag.hotel {
+            background: #eae4d4;
+            color: #7a6244;
+        }
+        .timeline-content .place-name .tag.must {
+            background: #f7ddd4;
+            color: #a5503c;
+        }
+        .timeline-content .place-name .tag.alt {
+            background: #e0ecdd;
+            color: #4a6e46;
+        }
+        .timeline-content .place-desc {
+            font-size: 13px;
+            color: #40585c;
+            margin-top: 2px;
+            line-height: 1.6;
+        }
+        .timeline-content .place-desc .highlight {
+            color: #2f7a86;
+            font-weight: 500;
+        }
+        .timeline-content .place-desc .dur {
+            color: #a5713c;
+            font-weight: 500;
+        }
+        /* 推荐菜品样式 */
+        .recommend {
+            font-size: 12px;
+            color: #5a7278;
+            margin-top: 4px;
+            background: #eef6f4;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid #d8e8e2;
+        }
+        .recommend strong {
+            font-weight: 600;
+            color: #2f7a5c;
+        }
+
+        /* ===== 导航按钮 ===== */
+        .nav-btn {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #ffffff;
+            background: linear-gradient(135deg, #55a3ae, #3d8b96);
+            padding: 4px 18px 4px 14px;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(70, 140, 155, 0.25);
+        }
+        .nav-btn:active {
+            transform: scale(0.94);
+            background: linear-gradient(135deg, #3d8b96, #2f727c);
+        }
+        .nav-btn .icon {
+            font-size: 13px;
+            margin-right: 4px;
+        }
+        .nav-btn.coral {
+            background: linear-gradient(135deg, #e0836a, #d06a50);
+            box-shadow: 0 2px 8px rgba(210, 110, 85, 0.25);
+        }
+        .nav-btn.coral:active {
+            background: linear-gradient(135deg, #d06a50, #b85a42);
+        }
+
+        /* ===== 备选区块 ===== */
+        .alt-section {
+            margin-top: 8px;
+            padding: 12px 14px 8px;
+            background: #f0f7f6;
+            border-radius: 14px;
+            border-left: 3px solid #a8cdd2;
+        }
+        .alt-section .alt-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #4e7078;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+        .alt-section .timeline-item {
+            border-bottom: 1px solid #e0eeec;
+            padding: 6px 0 10px;
+        }
+        .alt-section .timeline-item:last-child {
+            border-bottom: none;
+        }
+        .alt-section .timeline-time {
+            flex: 0 0 54px;
+            font-size: 12.5px;
+        }
+        .alt-section .timeline-content .place-name {
+            font-size: 14px;
+        }
+        .alt-section .timeline-content .place-desc {
+            font-size: 12px;
+        }
+        .alt-section .nav-btn {
+            font-size: 11px;
+            padding: 3px 14px 3px 12px;
+            background: linear-gradient(135deg, #7bb2ba, #5f9aa3);
+            box-shadow: 0 2px 6px rgba(100, 160, 170, 0.18);
+        }
+        .alt-section .nav-btn:active {
+            background: linear-gradient(135deg, #5f9aa3, #4d848d);
+        }
+
+        .divider {
+            border-top: 1px solid #dfecee;
+            margin: 12px 0 10px;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #46686e;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== 底部信息 ===== */
+        .footer-section {
+            margin-top: 24px;
+        }
+        .footer-section .card {
+            background: #f4fafa;
+            border-color: #d8e8e8;
+        }
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #26434a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .footer-section h3 .badge {
+            font-size: 11px;
+            font-weight: 500;
+            background: #dcebef;
+            padding: 1px 14px;
+            border-radius: 40px;
+            color: #46707a;
+        }
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            font-size: 13px;
+            line-height: 2.0;
+            color: #34504f;
+        }
+        .footer-section ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 2px 0;
+        }
+        .footer-section ul li .emoji {
+            flex: 0 0 22px;
+        }
+
+        /* 动态美食列表 */
+        .food-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .food-item-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 6px 10px 6px 12px;
+            background: #eef6f4;
+            border-radius: 12px;
+            border: 1px solid #d8e8e2;
+        }
+        .food-item-detail .food-name {
+            font-weight: 600;
+            color: #26434a;
+            min-width: 78px;
+            font-size: 14px;
+        }
+        .food-item-detail .food-desc {
+            font-size: 12px;
+            color: #46686e;
+            line-height: 1.4;
+        }
+
+        .refresh-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 24px;
+            background: linear-gradient(135deg, #7bb2ba, #5f9aa3);
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(100, 160, 170, 0.2);
+            transition: all 0.2s;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        .refresh-btn:active {
+            transform: scale(0.94);
+            background: linear-gradient(135deg, #5f9aa3, #4d848d);
+        }
+
+        .reminder-box {
+            background: #eef6f4;
+            border-left: 4px solid #4a93a0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #34504f;
+        }
+        .reminder-box strong {
+            color: #2f7a86;
+        }
+        .reminder-box.coral {
+            border-left-color: #d98e73;
+            background: #fdf3ee;
+        }
+        .reminder-box.coral strong {
+            color: #b0603f;
+        }
+        .reminder-box.green {
+            border-left-color: #7fae7b;
+            background: #f2f7ef;
+        }
+        .reminder-box.green strong {
+            color: #4e7a46;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 14px 0 6px;
+        }
+        .quick-actions a {
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 40px;
+            background: #ffffffec;
+            color: #34504f;
+            border: 1px solid #cfe0e2;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            touch-action: manipulation;
+            box-shadow: 0 2px 6px rgba(80, 140, 150, 0.05);
+        }
+        .quick-actions a:active {
+            background: #e0f0f1;
+            transform: scale(0.95);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #7ba0a6;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #d8e8e8;
+        }
+
+        /* ===== 返回顶部按钮 ===== */
+        .back-top {
+            position: fixed;
+            right: 14px;
+            bottom: 76px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #55a3ae, #3d8b96);
+            color: #fff;
+            font-size: 18px;
+            box-shadow: 0 4px 14px rgba(70, 140, 155, 0.35);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 95;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .back-top:active {
+            transform: scale(0.92);
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 400px) {
+            body { padding: 14px 10px 30px; }
+            .page-header h1 { font-size: 24px; }
+            .timeline-time { flex: 0 0 52px; font-size: 13px; }
+            .timeline-content .place-name { font-size: 14px; }
+            .card { padding: 14px 12px 12px; }
+            .nav-btn { font-size: 11px; padding: 3px 14px 3px 12px; }
+            .day-tabs a { font-size: 11.5px; padding: 4px 10px; }
+            .food-item-detail .food-name { min-width: 66px; font-size: 13px; }
+            .food-item-detail .food-desc { font-size: 11px; }
+        }
+
+        @media (min-width: 600px) {
+            body { padding: 32px 24px; }
+        }
+
+        @media print {
+            body { background: #fff; }
+            .card { box-shadow: none; border: 1px solid #ccc; }
+            .nav-btn { background: #3d8b96; color: #fff; }
+            .quick-actions { display: none; }
+            .day-tabs { display: none; }
+            .back-top { display: none !important; }
+            .page-header { background: #d8ecee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ==================== 标题 ==================== -->
+    <div class="page-header">
+        <h1>🌊 福建<span>·厦门之旅</span></h1>
+        <div class="sub">2026.10.03 周六 — 10.08 周四 · 行程导航</div>
+        <div class="hotel-info">
+            🏨 泰地万怡（10.3–10.6 三晚）→ 漳平渔家村（10.6 婚礼一晚）→ <strong>百琪万怡（10.7 一晚 · 湖里区高崎北路439号）</strong>
+        </div>
+    </div>
+
+    <!-- ==================== 日期跳转 ==================== -->
+    <div class="day-tabs">
+        <a href="#day-arrive" class="hl">10.3</a>
+        <a href="#day-gulangyu">10.4</a>
+        <a href="#day-nanputuo">10.5</a>
+        <a href="#day-wedding">10.6</a>
+        <a href="#day-jimei">10.7</a>
+        <a href="#day-return" class="hl">10.8</a>
+    </div>
+
+    <!-- ==================== 微信内唤起高德App提示 ==================== -->
+    <div class="reminder-box" style="margin:-8px 0 12px;font-size:12px;">
+        <strong>📱 微信内使用</strong>：点击「导航」后若未自动打开高德地图 App，请在打开的页面中点击「打开高德地图」按钮；若仍无反应，点右上角「···」→「在浏览器打开」后重试即可直接唤起 App 导航。
+    </div>
+    <div class="reminder-box coral" style="margin:0 0 18px;font-size:12px;">
+        <strong>⚠️ 国庆黄金周</strong>：本行程正处十一假期（10.1–10.8），鼓浪屿船票、南普陀、厦大预约都非常紧俏，<strong>船票务必提前抢</strong>（详见底部「预约清单」）。热门餐厅 11:30 前到店排队。
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 10.3 周六 · 出发抵达 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-arrive">
+        <div class="day-header">
+            <span class="day-emoji">✈️</span>
+            <span class="day-label">周六 · 出发抵达</span>
+            <span class="day-date">10月3日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">16:30<br><span class="note">出发去机场</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    湛江吴川机场
+                    <span class="tag">🛫 出发</span>
+                </div>
+                <div class="place-desc">假期机场车多，建议 <span class="highlight">16:30 前出发</span>，17:20 前到机场值机托运，18:20 航班起飞</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=湛江吴川机场&city=湛江&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">19:55<br><span class="note">落地</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    厦门高崎国际机场
+                    <span class="tag">🛬 抵达</span>
+                </div>
+                <div class="place-desc">T3/T4 落地，取行李预计 <span class="dur">约30-40分钟</span>；到达层直接打车或按指引坐地铁/BRT</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门高崎国际机场&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">20:45<br><span class="note">车程≈15min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    厦门泰地万怡酒店
+                    <span class="tag hotel">🏨 入住3晚</span>
+                </div>
+                <div class="place-desc">湖里区枋湖东路368号，机场打车约15分钟；办理入住后放行李休整</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门泰地万怡酒店&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">21:30<br><span class="note">夜宵可选</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    SM城市广场周边
+                    <span class="tag alt">🍜 夜宵</span>
+                </div>
+                <div class="place-desc">酒店距 SM 城市广场车程约5分钟，饿了可去觅食；不饿就早点休息，<span class="highlight">明天鼓浪屿是体力活</span></div>
+                <div class="recommend"><strong>推荐：</strong>沙茶面 · 鸭肉粥 · 烧烤大排档</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=SM城市广场&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 10.4 周日 · 鼓浪屿 + 中山路 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-gulangyu">
+        <div class="day-header">
+            <span class="day-emoji">🏝️</span>
+            <span class="day-label">周日 · 鼓浪屿一整天</span>
+            <span class="day-date">10月4日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">08:00<br><span class="note">早餐</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    酒店早餐 / 附近
+                    <span class="tag">🍚 早餐</span>
+                </div>
+                <div class="place-desc">吃饱再出发，岛上爬坡多；随身带水和小零食（岛上物价略贵）</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">08:40<br><span class="note">车程≈25min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    邮轮中心厦鼓码头（东渡）
+                    <span class="tag must">⛴️ 上船点</span>
+                </div>
+                <div class="place-desc"><span class="highlight">白天游客统一从这个码头上岛</span>，务必提前购票；建议买 9:10-9:30 班次，提前20分钟到安检候船</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=邮轮中心厦鼓码头&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">09:40<br><span class="note">航程≈20min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    鼓浪屿 · 三丘田码头
+                    <span class="tag must">🏝️ 核心景点</span>
+                </div>
+                <div class="place-desc">上岛后步行游览（岛上无机动车），建议路线：<span class="highlight">三丘田码头 → 日光岩 → 龙头路午餐 → 菽庄花园 → 老别墅漫步 → 返程</span></div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=鼓浪屿三丘田码头&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">10:00<br><span class="note">游玩2h</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    日光岩
+                    <span class="tag must">🌅 全岛制高点</span>
+                </div>
+                <div class="place-desc">郑成功遗迹，登顶360°俯瞰全岛红瓦绿树+厦门天际线，<span class="dur">游玩约2小时</span>（含郑成功纪念馆）；上午人相对少，先爬它</div>
+                <div class="recommend"><strong>购票：</strong>日光岩+菽庄花园+皓月园联票更划算（约100元/人，现场或官方小程序买）</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=日光岩&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">12:10<br><span class="note">午餐</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    龙头路小吃街
+                    <span class="tag">🥢 午餐</span>
+                </div>
+                <div class="place-desc">岛上最热闹的美食街，边走边吃或坐下吃都可以，人均30-60元</div>
+                <div class="recommend"><strong>推荐：</strong>龙头鱼丸（鱼丸汤）· 叶氏麻糍（糯叽叽，认准流动摊）· 赵小姐的店可跳过（拍照贵）</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=鼓浪屿龙头路&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">13:30<br><span class="note">游玩1.5h</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    菽庄花园 · 钢琴博物馆
+                    <span class="tag must">🎹 海上园林</span>
+                </div>
+                <div class="place-desc">依海而建的私家园林，四十四桥+十二洞天很出片，园内钢琴博物馆是国内唯一，<span class="dur">游玩约1.5小时</span></div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=菽庄花园&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">15:00<br><span class="note">漫步1.5h</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    老别墅街区 · 港仔后沙滩
+                    <span class="tag alt">📷 慢逛</span>
+                </div>
+                <div class="place-desc">沿福建路-漳州路一带钻小巷看百年领事馆和老别墅（八卦楼、黄荣远堂外观），累了去港仔后沙滩踩水，<span class="dur">悠闲逛约1.5小时</span></div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=港仔后海滨浴场&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">16:40<br><span class="note">返程船</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    三丘田码头 → 轮渡码头
+                    <span class="tag">⛴️ 离岛</span>
+                </div>
+                <div class="place-desc"><span class="highlight">返程可坐回中山路对面的轮渡码头</span>，下船即是中山路，无缝衔接今晚行程（回程班次票含在往返票内）</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门轮渡码头&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">17:40<br><span class="note">逛街1h</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    中山路步行街
+                    <span class="tag must">🏮 骑楼夜景</span>
+                </div>
+                <div class="place-desc">百年骑楼商业街，傍晚先逛街看骑楼，天黑后灯光亮起最出片，<span class="dur">逛约1小时</span>后吃晚餐</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门中山路步行街&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <!-- 晚餐 -->
+        <div class="divider"></div>
+        <div class="section-label">🍽️ 晚餐 · 中山路周边老字号（选一或都尝）</div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">18:40</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    莲欢海蛎煎（局口街）
+                    <span class="tag">🥢 老字号</span>
+                </div>
+                <div class="place-desc">藏在中山路局口街巷子里，本地人也排队的小店，海蛎新鲜不腥，<span class="highlight">人均20-30元</span>；饭点排队约20-30分钟，建议一人排队一人去隔壁买花生汤</div>
+                <div class="recommend"><strong>必点：</strong>海蛎煎 · 海蛎炸 · 配甜辣酱</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=莲欢海蛎煎&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">备选</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    1980烧肉粽 · 黄则和花生汤
+                    <span class="tag">🥢 老字号</span>
+                </div>
+                <div class="place-desc">1980烧肉粽（中山路附近）是厦门肉粽代表；黄则和（中山路总店）花生汤百年老字号，饭后甜品</div>
+                <div class="recommend"><strong>必点：</strong>烧肉粽+甜辣酱 · 卤肉饭 · 花生汤加蛋 · 韭菜盒</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=1980烧肉粽&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 1980烧肉粽
+                </a>
+                <span style="margin-left:6px;">
+                    <a class="nav-btn coral" href="https://uri.amap.com/search?keyword=黄则和花生汤店中山路&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 黄则和
+                    </a>
+                </span>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">20:30<br><span class="note">车程≈25min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    返回泰地万怡酒店
+                    <span class="tag hotel">🏨 休息</span>
+                </div>
+                <div class="place-desc">今天步数不少（预计2万步+），早点回酒店泡脚休息</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门泰地万怡酒店&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航回酒店
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 10.5 周一 · 南普陀-厦大-沙坡尾-环岛路 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-nanputuo">
+        <div class="day-header">
+            <span class="day-emoji">🛕</span>
+            <span class="day-label">周一 · 南普陀·沙坡尾·环岛路</span>
+            <span class="day-date">10月5日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">08:30<br><span class="note">车程≈25min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    南普陀寺
+                    <span class="tag must">🛕 千年古刹</span>
+                </div>
+                <div class="place-desc">闽南佛教名寺，<span class="highlight">免门票、需提前公众号预约</span>；中轴线+放生池，体力好可登后山五老峰俯瞰厦大（往返1h）；<span class="dur">游玩1.5-2小时</span>，寺旁素饼可当伴手礼</div>
+                <div class="recommend"><strong>顺手买：</strong>南普陀素饼（绿豆馅最经典，返程伴手礼）</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=南普陀寺&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">10:30<br><span class="note">可选</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    厦门大学（思明校区）
+                    <span class="tag alt">🎓 需预约</span>
+                </div>
+                <div class="place-desc">就在南普陀隔壁，"中国最美大学"之一；<span class="highlight">需提前在「厦门大学」官方小程序实名预约，国庆名额极难抢</span>，约不到就跳过不影响行程；<span class="dur">校内漫步约1.5小时</span>（芙蓉湖、芙蓉隧道涂鸦墙）</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门大学思明校区&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">11:50<br><span class="note">午餐</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    乌糖沙茶面（民族路）
+                    <span class="tag must">🍜 排队名店</span>
+                </div>
+                <div class="place-desc">厦门沙茶面天花板之一，开了30多年，<span class="highlight">卖完即止（一般下午2点左右）</span>，11:30前到排队短；小店环境一般但味道正，人均25-40元</div>
+                <div class="recommend"><strong>必点：</strong>沙茶面（加鲜虾+鱿鱼+豆腐泡+醋肉）· 五香条 · 卤蛋</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=乌糖沙茶面&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">13:30<br><span class="note">游玩1.5-2h</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    沙坡尾 · 艺术西区
+                    <span class="tag must">🎨 文艺街区</span>
+                </div>
+                <div class="place-desc">老避风坞改造的文艺街区，涂鸦墙+渔船背景超出片，艺术西区有市集和咖啡馆；<span class="highlight">下午最热时段正好在室内咖啡馆歇脚</span>，<span class="dur">慢逛1.5-2小时</span></div>
+                <div class="recommend"><strong>下午茶：</strong>随便挑家看得见避风坞渔船的咖啡馆发呆</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=沙坡尾艺术西区&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">15:30<br><span class="note">可选</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    胡里山炮台
+                    <span class="tag alt">🏰 看海古炮台</span>
+                </div>
+                <div class="place-desc">沙坡尾步行/骑行10分钟可达，清代海防炮台，有<span class="highlight">世界现存最大海岸古炮（克虏伯大炮）</span>，看海一流；不想逛可直接跳到下一站沙滩，<span class="dur">游玩约1小时</span></div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=胡里山炮台&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">16:45<br><span class="note">日落黄金档</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    环岛路 · 白城沙滩 → 黄厝
+                    <span class="tag must">🚲 海边骑行</span>
+                </div>
+                <div class="place-desc">厦门精华海岸线，<span class="highlight">租双人自行车沿海骑行（约40元/h），傍晚吹海风看日落最舒服</span>；白城沙滩踩水→音乐广场→黄厝海滩；<span class="dur">骑行+沙滩约1.5-2小时</span></div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=白城沙滩&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 白城沙滩
+                </a>
+                <span style="margin-left:6px;">
+                    <a class="nav-btn coral" href="https://uri.amap.com/search?keyword=黄厝海滩&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 黄厝海滩
+                    </a>
+                </span>
+            </div>
+        </div>
+
+        <!-- 晚餐 -->
+        <div class="divider"></div>
+        <div class="section-label">🍽️ 晚餐 · 海鲜大排档</div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">18:45</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    小眼镜大排档
+                    <span class="tag must">🦑 本地海鲜</span>
+                </div>
+                <div class="place-desc">厦门人气最旺的海鲜大排档之一（多家分店），<span class="highlight">明码标价现捞现做，本地人也常去，不算坑</span>；国庆饭点排队约30-60分钟，建议18:30前到店取号；人均80-120元</div>
+                <div class="recommend"><strong>必点：</strong>酱油水小鱿鱼 · 椒盐皮皮虾 · 蒜蓉粉丝蒸扇贝 · 姜母鸭（想尝闽南味可加）</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=小眼镜大排档&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">21:00<br><span class="note">车程≈25min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    返回泰地万怡酒店
+                    <span class="tag hotel">🏨 休息</span>
+                </div>
+                <div class="place-desc">明天上午植物园轻松逛，下午要赶去漳平，今晚早点睡</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门泰地万怡酒店&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航回酒店
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 10.6 周二 · 植物园 + 漳平婚礼 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-wedding">
+        <div class="day-header">
+            <span class="day-emoji">💒</span>
+            <span class="day-label">周二 · 植物园 → 漳平婚礼</span>
+            <span class="day-date">10月6日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">08:00<br><span class="note">早餐+退房</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    退房 · 行李随行
+                    <span class="tag hotel">🧳 退房</span>
+                </div>
+                <div class="place-desc">今天要换城市，<span class="highlight">早餐后办理退房，行李放车上</span>；也可和前台确认能否延迟到13:00退房再回来取</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">09:00<br><span class="note">游玩2.5-3h</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    厦门园林植物园（万石植物园）
+                    <span class="tag must">🌵 网红打卡</span>
+                </div>
+                <div class="place-desc">两大必打卡：<span class="highlight">雨林世界（喷雾仙境，上午9:30-11:30喷雾最出片）+ 多肉植物区（巨型仙人掌沙漠大片）</span>；门票30元，园内观光车10元（园区大，建议坐）；<span class="dur">游玩2.5-3小时</span></div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门园林植物园&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">12:10<br><span class="note">午餐</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    浮屿大同鸭肉粥
+                    <span class="tag">🥣 老字号</span>
+                </div>
+                <div class="place-desc">植物园出来车程约15分钟（大同路，近第八市场），厦门鸭肉粥头牌，<span class="highlight">料自选、出餐快，赶时间首选</span>；人均20-40元</div>
+                <div class="recommend"><strong>必点：</strong>鸭肉粥（加卤大肠+卤蛋+鸭腱）· 五香条 · 醋肉</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=浮屿大同鸭肉粥&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">13:15<br><span class="note">🚗/🚄 双方案</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    出发 → 龙岩漳平
+                    <span class="tag must">🚗 城际移动</span>
+                </div>
+                <div class="place-desc"><span class="highlight">方案A 租车自驾</span>：14:00前上高速，全程约190km、2.5-3小时，国庆易堵，中途安溪/华安服务区休息一次；<br><span class="highlight">方案B 高铁</span>：13:15出发去厦门北（车程约25min），乘14点前后 厦门北→漳平西 的动车（约1.5h，直达班次少，<strong>提前在12306锁定</strong>；时间不合就在龙岩中转），出站打车约20min到酒店</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=漳平市&city=龙岩&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 自驾导航漳平
+                </a>
+                <span style="margin-left:6px;">
+                    <a class="nav-btn coral" href="https://uri.amap.com/search?keyword=厦门北站&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 高铁去厦门北
+                    </a>
+                </span>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">16:30<br><span class="note">到达休整</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    漳平渔家村餐饮连锁酒店
+                    <span class="tag hotel">🏨 入住1晚</span>
+                </div>
+                <div class="place-desc">到达后先办入住、稍作休整换衣服，17:45 前到宴会厅签到</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=渔家村餐饮连锁酒店&city=漳平&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">18:00</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    婚礼晚宴 🎉
+                    <span class="tag must">💒 正日子</span>
+                </div>
+                <div class="place-desc">准时开席，开开心心吃好喝好；<span class="highlight">当晚住渔家村酒店，喝酒不开车，明早再出发</span></div>
+            </div>
+        </div>
+
+        <div class="reminder-box coral" style="margin-top:10px;">
+            <strong>🔔 出发提醒</strong><br>
+            ① 婚宴若喝酒，<strong>严禁自驾</strong>，提前安排好代驾或让不喝酒的人开车；<br>
+            ② 10.6 是假期返程高峰，下午高速车多，建议用高德开启「实时路况」选路线；<br>
+            ③ 给手机充满电、备好充电线，路上2.5-3小时可补觉；<br>
+            ④ <strong>选高铁</strong>：往返班次都提前在12306查好买好（漳平西站离市区约20min车程）；<strong>选租车</strong>：取车时拍视频验车、确认保险和还车时间，婚宴喝酒就把车留酒店、次日再开。
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 10.7 周三 · 返回厦门 · 集美学村 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-jimei">
+        <div class="day-header">
+            <span class="day-emoji">🏫</span>
+            <span class="day-label">周三 · 返厦 · 看海地铁+集美</span>
+            <span class="day-date">10月7日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">08:30<br><span class="note">早餐退房</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    漳平出发 → 厦门
+                    <span class="tag">🚗 返程</span>
+                </div>
+                <div class="place-desc"><span class="highlight">自驾</span>：早餐后出发，车程约2.5-3小时；<span class="highlight">高铁</span>：乘9点前后 漳平西→厦门北 动车（约1.5h），出站打车约25min到酒店。10.7上午返程车流比昨天下午好一些</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门百琪万怡酒店&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航酒店
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">11:30<br><span class="note">入住</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    厦门百琪万怡酒店
+                    <span class="tag hotel">🏨 入住1晚</span>
+                </div>
+                <div class="place-desc">湖里区高崎北路439号，办入住放行李；<span class="highlight">酒店距高崎机场车程约10min、距厦门北站约25min</span>，明天分头返程超方便；先吃午饭，下午坐"看海地铁"去集美学村</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门百琪万怡酒店&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">12:00<br><span class="note">午餐</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    临家闽南菜
+                    <span class="tag">🥢 闽南菜</span>
+                </div>
+                <div class="place-desc">厦门口碑连锁闽南菜，<span class="highlight">选湖里区离酒店最近的分店</span>，环境好出品稳，一次尝齐闽南经典菜；人均80-110元</div>
+                <div class="recommend"><strong>必点：</strong>姜母鸭 · 海蛎煎 · 五香卷 · 沙茶面 · 同安封肉</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=临家闽南菜&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <!-- 下午固定节目：看海地铁 + 集美学村 -->
+        <div class="timeline-item">
+            <div class="timeline-time">13:20<br><span class="note">🚇 乘车≈8min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    地铁1号线 · 高崎站 → 集美学村站
+                    <span class="tag must">🌊 看海地铁</span>
+                </div>
+                <div class="place-desc">酒店打车约5min到1号线高崎站，乘往厦门北方向列车；<span class="highlight">高崎↔集美学村段全程跑在跨海海堤上，车窗两侧就是海</span>，即"千与千寻"同款海上列车，乘约6-8min、票价2-3元；下午去程<span class="highlight">坐左侧（朝西）</span>，赶上落日海面波光超好拍</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=地铁高崎站&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航高崎站
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">14:00<br><span class="note">慢逛2.5-3h</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    集美学村
+                    <span class="tag must">🏫 嘉庚建筑</span>
+                </div>
+                <div class="place-desc">集美学村站下车即达；建议路线：<span class="highlight">龙舟池 → 集美中学道南楼（外观）→ 陈嘉庚纪念馆（免费）→ 鳌园/陈嘉庚故居（联票约30元，可选）</span>；中西合璧嘉庚建筑配龙舟池倒影很出片，<span class="dur">慢逛2.5-3小时</span></div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=集美学村&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+                <span style="margin-left:6px;">
+                    <a class="nav-btn coral" href="https://uri.amap.com/search?keyword=陈嘉庚纪念馆&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 陈嘉庚纪念馆
+                    </a>
+                </span>
+            </div>
+        </div>
+
+        <!-- 晚餐 -->
+        <div class="divider"></div>
+        <div class="section-label">🍽️ 晚餐 · 集美学村味</div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">17:30</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    集美世茂里 / 学村小吃街
+                    <span class="tag">🥢 学区价</span>
+                </div>
+                <div class="place-desc">集美湾世茂里商业街或学村小吃街，<span class="highlight">学区物价、实在不坑</span>；吃完沿集美湾散步看学村夜景亮灯，再坐1号线返程</div>
+                <div class="recommend"><strong>推荐：</strong>沙茶面 · 海蛎煎 · 五香卷 · 花生汤 · 烤鱿鱼</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门世茂里&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">20:00</div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    回酒店 · 收拾行李
+                    <span class="tag hotel">🧳 整理</span>
+                </div>
+                <div class="place-desc">返程坐1号线回高崎站（<span class="highlight">傍晚/入夜海堤两侧亮灯，看海地铁另一种味道</span>），再打车约5min回酒店，或直接打车约20-25min；回酒店收拾行李、确认明天高铁票和航班信息；<span class="highlight">伴手礼（肉松、素饼、馅饼、海味干货）明早八市/中山路一次买齐</span></div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门百琪万怡酒店&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航回酒店
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 10.8 周四 · 返程日 -->
+    <!-- ============================================================ -->
+    <div class="card" id="day-return">
+        <div class="day-header">
+            <span class="day-emoji">👋</span>
+            <span class="day-label">周四 · 告别厦门</span>
+            <span class="day-date">10月8日</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">08:30<br><span class="note">早餐退房</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    退房 · 行李寄存前台
+                    <span class="tag hotel">🧳 退房</span>
+                </div>
+                <div class="place-desc">早餐后退房，行李寄存酒店前台（免费），轻装出门逛最后半天</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">09:15<br><span class="note">游玩2h</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    中山路 + 八市 · 骑楼补漏 + 买伴手礼
+                    <span class="tag alt">🛍️ 轻松逛</span>
+                </div>
+                <div class="place-desc">上午中山路人少好逛，补齐伴手礼：<span class="highlight">黄胜记肉松肉干、南普陀素饼、鼓浪屿馅饼</span>；<span class="highlight">步行约10min到第八市场（八市）</span>，厦门最老的海鲜市场，顺路买芋包/满煎糕/海味干货，敢吃挑战土笋冻；<span class="dur">逛约2小时</span>，不安排远景点，保证赶车时间；想就近也可换五缘湾湿地公园散步（酒店车程15min）</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门中山路步行街&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 中山路
+                </a>
+                <span style="margin-left:6px;">
+                    <a class="nav-btn coral" href="https://uri.amap.com/search?keyword=厦门第八市场&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                        <span class="icon">📍</span> 八市
+                    </a>
+                </span>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">11:00<br><span class="note">午餐</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    午餐 · 中山路简餐
+                    <span class="tag">🍚 午餐</span>
+                </div>
+                <div class="place-desc">出发前吃顿饱的，推荐沙茶面或面线糊，上菜快不耽误赶车</div>
+                <div class="recommend"><strong>推荐：</strong>月华沙茶面 · 面线糊加油条+醋肉 · 花生汤收尾</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=月华沙茶面&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航
+                </a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="section-label">🧳 12:10 起 · 分头返程</div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">12:10<br><span class="note">车程≈40min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    先生 → 厦门北站
+                    <span class="tag must">🚄 高铁</span>
+                </div>
+                <div class="place-desc">中山路→厦门北约22km，<span class="highlight">国庆最后一天车流大，12:10务必上车</span>，12:50前到站安检；<br>🚄 13:30 厦门北 → 深圳北，16:24 到达</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门北站&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航厦门北
+                </a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">13:00-19:00<br><span class="note">自由安排</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    太太 · 下午自由时间
+                    <span class="tag alt">☕ 悠闲</span>
+                </div>
+                <div class="place-desc">送完先生后回酒店补觉/咖啡馆发呆（车程约30min），或留市区补逛没玩够的点；酒店就在机场边，<span class="highlight">18:40前回酒店取行李即可</span></div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-time">19:10<br><span class="note">车程≈10-15min</span></div>
+            <div class="timeline-content">
+                <div class="place-name">
+                    太太 → 高崎国际机场
+                    <span class="tag must">✈️ 航班</span>
+                </div>
+                <div class="place-desc">酒店到高崎机场仅约10-15min车程，取行李后19:10出发，19:30前到机场值机托运，时间充裕（<span class="highlight">国内航班一般起飞前45分钟停止值机</span>）；<br>✈️ 20:55 厦门 → 湛江吴川机场</div>
+                <a class="nav-btn" href="https://uri.amap.com/search?keyword=厦门高崎国际机场&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                    <span class="icon">📍</span> 导航机场
+                </a>
+            </div>
+        </div>
+
+        <div class="reminder-box coral" style="margin-top:10px;">
+            <strong>⏰ 10.8 是国庆假期最后一天</strong>：返程高峰，去厦门北的路上易堵，<strong>12:10 出发宁可提前不要踩点</strong>；太太去机场仅10-15min车程、缓冲充足，但出发前仍用高德看一眼实时路况。
+        </div>
+    </div>
+
+    <!-- ==================== 底部信息区 ==================== -->
+    <div class="footer-section">
+
+        <!-- ===== 预约清单 ===== -->
+        <div class="card">
+            <h3>📌 国庆预约清单 <span class="badge">重要 · 按优先级</span></h3>
+            <div class="reminder-box coral">
+                <strong>① 鼓浪屿船票（最优先）</strong><br>
+                微信小程序/公众号「厦门轮渡有限公司」购票，<strong>提前15天放票、每日限流售罄很快</strong>；买 10.4 上午「邮轮中心厦鼓码头 → 三丘田码头」往返票（约35元/人），<strong>需身份证实名</strong>。
+            </div>
+            <div class="reminder-box">
+                <strong>② 南普陀寺</strong>：公众号「南普陀寺」提前预约 10.5 上午场，免费；带好身份证。
+            </div>
+            <div class="reminder-box">
+                <strong>③ 厦门大学</strong>：官方小程序「厦门大学访客预约系统」实名抢票，国庆极难约，<strong>约不到就跳过</strong>（行程已留缓冲）。
+            </div>
+            <div class="reminder-box green">
+                <strong>④ 无需预约</strong>：植物园（现场/线上购票）、沙坡尾、环岛路、白鹭洲、集美学村（陈嘉庚纪念馆周一闭馆，10.7周三正常开放）。
+            </div>
+            <div class="reminder-box green" style="margin-top:8px;">
+                <strong>🏨 酒店</strong>：泰地万怡 3 晚（10.3-10.6）· 漳平渔家村 1 晚（10.6）· 百琪万怡 1 晚（10.7）——假期房价高、房源紧，<strong>建议尽快锁定</strong>。
+            </div>
+        </div>
+
+        <!-- ===== 行前准备 ===== -->
+        <div class="card">
+            <h3>🎒 行前准备</h3>
+            <ul>
+                <li><span class="emoji">🆔</span> <strong>证件</strong> · 身份证（船票/景点预约/高铁值机全程要用）</li>
+                <li><span class="emoji">🌡️</span> <strong>天气</strong> · 10月厦门约 24-30℃，短袖+薄外套；仍属台风季尾声，<strong>带把折叠伞</strong>（防晒又防雨）</li>
+                <li><span class="emoji">☀️</span> <strong>防晒</strong> · 海岛紫外线强，防晒霜、帽子、墨镜必备</li>
+                <li><span class="emoji">👟</span> <strong>鞋子</strong> · 鼓浪屿爬坡+沙滩，穿舒适好走的鞋；可备一双拖鞋踩水</li>
+                <li><span class="emoji">🔋</span> <strong>其他</strong> · 充电宝、晕船药（鼓浪屿轮渡）、防蚊液（植物园）</li>
+                <li><span class="emoji">💊</span> <strong>药品</strong> · 肠胃药（海鲜大排档保险起见）、创可贴</li>
+            </ul>
+        </div>
+
+        <!-- ===== 动态美食推荐 ===== -->
+        <div class="card">
+            <h3>🍜 厦门必吃 · 闽南风味 <span class="badge">随机推荐</span></h3>
+            <div id="foodContainer" class="food-list">
+                <!-- 默认静态推荐（不依赖JS）；浏览器中点"换一批"可随机换 -->
+                <div class="food-item-detail">
+                    <span class="food-name">沙茶面</span>
+                    <span class="food-desc">厦门头牌小吃，花生+虾干沙茶汤底，加鲜虾鱿鱼豆腐泡醋肉，乌糖/月华老字号</span>
+                </div>
+                <div class="food-item-detail">
+                    <span class="food-name">海蛎煎</span>
+                    <span class="food-desc">蚵仔煎闽南原版，鲜海蛎+地瓜粉+鸡蛋，外酥里嫩配甜辣酱，莲欢最有名</span>
+                </div>
+                <div class="food-item-detail">
+                    <span class="food-name">姜母鸭</span>
+                    <span class="food-desc">老姜爆香砂锅慢煸番鸭，焦香不腻，闽南秋冬滋补名菜</span>
+                </div>
+                <div class="food-item-detail">
+                    <span class="food-name">五香条</span>
+                    <span class="food-desc">猪肉+荸荠裹豆腐皮炸，外酥里嫩，闽南宴席必备，蘸甜辣酱</span>
+                </div>
+                <div class="food-item-detail">
+                    <span class="food-name">烧肉粽</span>
+                    <span class="food-desc">1980老字号，糯米包五花肉栗子香菇虾米，蘸甜辣酱+花生酱</span>
+                </div>
+                <div class="food-item-detail">
+                    <span class="food-name">花生汤</span>
+                    <span class="food-desc">黄则和百年名店，花生熬到入口即化，可加蛋，早餐甜品两相宜</span>
+                </div>
+                <div class="food-item-detail">
+                    <span class="food-name">土笋冻</span>
+                    <span class="food-desc">沙虫熬制的果冻状小吃，配蒜醋酱油，爽滑弹牙——勇士挑战款</span>
+                </div>
+                <div class="food-item-detail">
+                    <span class="food-name">酱油水小鱿鱼</span>
+                    <span class="food-desc">大排档灵魂做法，小鱿鱼酱油水焖，鲜甜入味，配啤酒一绝</span>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:10px;">
+                <button class="refresh-btn" id="refreshFoodBtn">🔄 换一批</button>
+            </div>
+            <div style="margin-top:10px;font-size:12px;color:#7ba0a6;border-top:1px solid #d8e8e8;padding-top:8px;">
+                🛍️ 伴手礼：黄胜记肉松肉干 · 南普陀素饼 · 鼓浪屿馅饼 · 漳平水仙茶（10.6在漳平买更正宗）
+            </div>
+        </div>
+
+        <!-- 快捷操作 -->
+        <div class="quick-actions">
+            <a href="https://uri.amap.com/search?keyword=厦门泰地万怡酒店&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                <span class="icon">🏨</span> 泰地万怡
+            </a>
+            <a href="https://uri.amap.com/search?keyword=厦门百琪万怡酒店&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                <span class="icon">🏨</span> 百琪万怡
+            </a>
+            <a href="https://uri.amap.com/search?keyword=厦门高崎国际机场&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                <span class="icon">✈️</span> 高崎机场
+            </a>
+            <a href="https://uri.amap.com/search?keyword=厦门北站&city=厦门&src=xiamen&coordinate=gaode&callnative=1" target="_blank">
+                <span class="icon">🚄</span> 厦门北站
+            </a>
+        </div>
+
+        <div class="footer-note">
+            📱 点击任意「导航」按钮，自动唤起高德地图 App 从当前位置规划路线 · 祝旅途愉快 🌊
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== 返回顶部 ===== -->
+<button id="backTopBtn" class="back-top" aria-label="返回顶部">↑</button>
+
+<script>
+    // ===== 厦门美食数据 =====
+    const FOOD_DATA = [
+        { name: '沙茶面', desc: '厦门头牌小吃，花生+虾干沙茶汤底，加鲜虾鱿鱼豆腐泡醋肉，乌糖/月华老字号' },
+        { name: '海蛎煎', desc: '蚵仔煎闽南原版，鲜海蛎+地瓜粉+鸡蛋，外酥里嫩配甜辣酱，莲欢最有名' },
+        { name: '姜母鸭', desc: '老姜爆香砂锅慢煸番鸭，焦香不腻，闽南秋冬滋补名菜' },
+        { name: '五香条', desc: '猪肉+荸荠裹豆腐皮炸，外酥里嫩，闽南宴席必备，蘸甜辣酱' },
+        { name: '烧肉粽', desc: '1980老字号，糯米包五花肉栗子香菇虾米，蘸甜辣酱+花生酱' },
+        { name: '土笋冻', desc: '沙虫熬制的果冻状小吃，配蒜醋酱油，爽滑弹牙——勇士挑战款' },
+        { name: '花生汤', desc: '黄则和百年名店，花生熬到入口即化，可加蛋，早餐甜品两相宜' },
+        { name: '鸭肉粥', desc: '大同鸭肉粥老字号，卤鸭汤底粥，自选卤大肠卤蛋鸭腱，夜宵神器' },
+        { name: '面线糊', desc: '闽南经典早餐，细面线糊配醋肉、大肠、卤蛋，撒胡椒粉，暖胃' },
+        { name: '醋肉', desc: '炸五香醋肉，酸香酥脆，单吃是零嘴，加进面线糊/沙茶面是灵魂' },
+        { name: '春卷（薄饼）', desc: '闽南薄饼菜：高丽菜胡萝卜海苔花生酥裹薄皮，清甜爽口' },
+        { name: '芋包', desc: '八市名小吃，芋泥做皮包笋丁肉丁香菇馅，蒸出来软糯咸香' },
+        { name: '满煎糕', desc: '街头传统甜点，米浆发酵现煎，红糖花生芝麻夹心，外脆内软' },
+        { name: '同安封肉', desc: '整块五花肉纱布包裹蒸到酥烂，板栗香菇虾米入味，宴席硬菜' },
+        { name: '石花膏 / 四果汤', desc: '夏日解暑圣品，石花膏+蜂蜜水+红豆芋圆仙草，秉正堂老字号' },
+        { name: '酱油水小鱿鱼', desc: '大排档灵魂做法，小鱿鱼酱油水焖，鲜甜入味，配啤酒一绝' },
+        { name: '椒盐皮皮虾', desc: '现捞皮皮虾椒盐爆炒，壳脆肉弹，厦门海鲜排档必点' },
+        { name: '南普陀素饼', desc: '南普陀寺百年素点，绿豆馅最经典，酥皮细腻，伴手礼首选' },
+        { name: '黄胜记肉松', desc: '鼓浪屿百年老号，肉松肉干现做现卖，咸香酥松，好带好吃' },
+        { name: '鼓浪屿馅饼', desc: '传统闽南糕点，绿豆沙/肉松馅，配茶刚好，机场也有卖' },
+        { name: '虾面', desc: '虾壳熬汤+碱水面，汤色红亮鲜掉眉毛，新厦虾面等老店' },
+        { name: '漳平水仙茶', desc: '漳平特产乌龙茶（10.6去漳平可带），方形茶饼，兰花香醇' }
+    ];
+
+    const DISPLAY_COUNT = 8;
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function renderFoods() {
+        const container = document.getElementById('foodContainer');
+        const shuffled = shuffleArray([...FOOD_DATA]);
+        const selected = shuffled.slice(0, DISPLAY_COUNT);
+        let html = '';
+        selected.forEach(item => {
+            html += `
+                <div class="food-item-detail">
+                    <span class="food-name">${item.name}</span>
+                    <span class="food-desc">${item.desc}</span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        renderFoods();
+        document.getElementById('refreshFoodBtn').addEventListener('click', renderFoods);
+
+        // 返回顶部按钮
+        const backTopBtn = document.getElementById('backTopBtn');
+        window.addEventListener('scroll', function() {
+            backTopBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
+        }, { passive: true });
+        backTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+</script>
+
+</body>
+</html>
